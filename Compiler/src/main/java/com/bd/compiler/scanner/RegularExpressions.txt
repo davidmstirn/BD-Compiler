@@ -1,0 +1,48 @@
+C- lexical conventions:
+	keywords:
+	else if int return void while
+
+	Symbols:
+	+ - * / < <= > >= == != = ; , ( ) [ ] { } /* */
+
+	Others:
+	ID = letter letter*
+	NUM = digit digit*
+	letter = [a-z,A-Z]
+	digit = [0-9]
+
+	Whitespace is ignored except that it must separate IDs, NUMs, and keywords
+	Comments can be anywhere whitespace can appear (use DFA states)
+
+
+Regular Expressions:
+PLUS_TOKEN = "+"
+MINUS_TOKEN = -
+MULT_TOKEN = "*"
+DIV_TOKEN = /
+LT_TOKEN = <
+LTE_TOKEN = <=
+GT_TOKEN = >
+GTE_TOKEN = >=
+EQ_TOKEN = ==
+NOTEQ_TOKEN = !=
+ASIGN_TOKEN = =
+SEMI_TOKEN = ;
+COMMA_TOKEN = ,
+LPAR_TOKEN = "("
+RPAR_TOKEN = ")"
+LSQ_TOKEN = [
+RSQ_TOKEN = ]
+LCURL_TOKEN = "{"
+RCURL_TOKEN = "}"
+COMMENT_TOKEN = /"*".*"*"/
+L = [A-Z,A-Z]
+D = [0-9]
+ID_TOKEN = L+
+NUM_TOKEN = D+
+IF_TOKEN = if
+ELSE_TOKEN = else
+INT_TOKEN = int
+RETURN_TOKEN = return
+VOID_TOKEN = void
+WHILE_TOKEN = while

@@ -10,11 +10,35 @@ package com.bd.compiler.scanner;
  */
 public class Token {
     public enum TokenType {
-        INT_TOKEN,
-        DOUBLE_TOKEN,
-        IF_TOKEN,
         EOF_TOKEN,
-        // rest of tokens ....
+        PLUS_TOKEN,
+        MINUS_TOKEN,
+        MULT_TOKEN,
+        DIV_TOKEN,
+        LT_TOKEN,
+        LTE_TOKEN,
+        GT_TOKEN,
+        GTE_TOKEN,
+        EQ_TOKEN,
+        NOTEQ_TOKEN,
+        ASSIGN_TOKEN,
+        SEMI_TOKEN,
+        COMMA_TOKEN,
+        LPAR_TOKEN,
+        RPAR_TOKEN,
+        LSQ_TOKEN,
+        RSQ_TOKEN,
+        LCURL_TOKEN,
+        RCURL_TOKEN,
+        COMMENT_TOKEN,
+        ID_TOKEN,
+        NUM_TOKEN,
+        IF_TOKEN,
+        ELSE_TOKEN,
+        INT_TOKEN,
+        RETURN_TOKEN,
+        VOID_TOKEN,
+        WHILE_TOKEN
     }
     
     private TokenType tokenType;
