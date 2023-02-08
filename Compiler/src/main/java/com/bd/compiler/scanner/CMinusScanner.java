@@ -68,11 +68,7 @@ public class CMinusScanner implements Scanner {
         try {
             while (state != State.DONE) {
                 inFile.mark(1);
-                int character = inFile.read();
-                if (character == -1) {
-                    return new Token(Token.TokenType.EOF_TOKEN);
-                }
-                char c = (char) character;
+                char c = (char) inFile.read();
                 switch (state) {
                     case START:
                         if (Character.isAlphabetic(c)) {
@@ -91,7 +87,7 @@ public class CMinusScanner implements Scanner {
                             state = State.GREATERTHAN;
                         } else if (c == '=') {
                             state = State.EQUALS;
-                        } else if (c == ' ' || c == '\t' || c == '\n') {
+                        } else if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
                             break; // If the character is whitespace, ignore it
                         } else {
                             state = State.DONE;
@@ -107,6 +103,7 @@ public class CMinusScanner implements Scanner {
                                 case ']' -> currentToken = new Token(Token.TokenType.RSQ_TOKEN);
                                 case '{' -> currentToken = new Token(Token.TokenType.LCURL_TOKEN);
                                 case '}' -> currentToken = new Token(Token.TokenType.RCURL_TOKEN);
+                                case (char) -1 -> currentToken = new Token(Token.TokenType.EOF_TOKEN);
                                 default -> {
                                     System.out.println("Invalid token starting with " + c);
                                     return new Token(Token.TokenType.ERROR_TOKEN);
@@ -128,7 +125,7 @@ public class CMinusScanner implements Scanner {
                         // if the next character is not a digit, backup and return the number up until now
                         if (!Character.isDigit(c)) {
                             inFile.reset();
-                            currentToken = new Token(Token.TokenType.ID_TOKEN, Integer.parseInt(tokenValue));
+                            currentToken = new Token(Token.TokenType.NUM_TOKEN, Integer.parseInt(tokenValue));
                             state = State.DONE;
                         } else {
                             tokenValue += c;
