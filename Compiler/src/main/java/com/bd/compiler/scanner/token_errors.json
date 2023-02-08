@@ -7,5 +7,9 @@
   { "ERROR_TOKEN" : "himom123" },
   { "NUM_TOKEN" : "1234" },
   { "ERROR_TOKEN" : "12b34" },
+  { "ERROR_TOKEN" : "%" },
+  { "ERROR_TOKEN" : "#" },
+  { "ID_TOKEN" : "winning" },
+  { "ERROR_TOKEN" : "n0l33tsp3ak" },
   "EOF_TOKEN"
 ]
