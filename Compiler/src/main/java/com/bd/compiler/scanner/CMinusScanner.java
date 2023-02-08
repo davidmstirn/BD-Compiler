@@ -35,8 +35,187 @@ public class CMinusScanner implements Scanner {
         return nextToken;
     }
     
+    private enum State {
+        START,
+        IDENTIFIER,
+        NUMBER,
+        DONE,
+        BANG,
+        SLASH,
+        INCOMMENT,
+        CLOSECOMMENT,
+        LESSTHAN,
+        GREATERTHAN,
+        EQUALS
+    }
+    
+    private Token reservedLookup(Token input) {
+        return switch ((String)input.getData()) {
+            case "if" -> new Token(Token.TokenType.IF_TOKEN);
+            case "else" -> new Token(Token.TokenType.ELSE_TOKEN);
+            case "int" -> new Token(Token.TokenType.INT_TOKEN);
+            case "return" -> new Token(Token.TokenType.RETURN_TOKEN);
+            case "void" -> new Token(Token.TokenType.VOID_TOKEN);
+            case "while" -> new Token(Token.TokenType.WHILE_TOKEN);
+            default -> input;
+        };
+    }
+    
     private Token scanToken(){
-        return null;
+        Token currentToken = null;
+        State state = State.START;
+        String tokenValue = "";
+        try {
+            while (state != State.DONE) {
+                inFile.mark(1);
+                int character = inFile.read();
+                if (character == -1) {
+                    return new Token(Token.TokenType.EOF_TOKEN);
+                }
+                char c = (char) character;
+                switch (state) {
+                    case START:
+                        if (Character.isAlphabetic(c)) {
+                            state = State.IDENTIFIER;
+                            tokenValue += c;
+                        } else if (Character.isDigit(c)) {
+                            state = State.NUMBER;
+                            tokenValue += c;
+                        } else if (c == '!') {
+                            state = State.BANG;
+                        } else if (c == '/') {
+                            state = State.SLASH;
+                        } else if (c == '<') {
+                            state = State.LESSTHAN;
+                        } else if (c == '>') {
+                            state = State.GREATERTHAN;
+                        } else if (c == '=') {
+                            state = State.EQUALS;
+                        } else if (c == ' ' || c == '\t' || c == '\n') {
+                            break; // If the character is whitespace, ignore it
+                        } else {
+                            state = State.DONE;
+                            switch (c) {
+                                case '+' -> currentToken = new Token(Token.TokenType.PLUS_TOKEN);
+                                case '-' -> currentToken = new Token(Token.TokenType.MINUS_TOKEN);
+                                case '*' -> currentToken = new Token(Token.TokenType.MULT_TOKEN);
+                                case ';' -> currentToken = new Token(Token.TokenType.SEMI_TOKEN);
+                                case ',' -> currentToken = new Token(Token.TokenType.COMMA_TOKEN);
+                                case '(' -> currentToken = new Token(Token.TokenType.LPAR_TOKEN);
+                                case ')' -> currentToken = new Token(Token.TokenType.RPAR_TOKEN);
+                                case '[' -> currentToken = new Token(Token.TokenType.LSQ_TOKEN);
+                                case ']' -> currentToken = new Token(Token.TokenType.RSQ_TOKEN);
+                                case '{' -> currentToken = new Token(Token.TokenType.LCURL_TOKEN);
+                                case '}' -> currentToken = new Token(Token.TokenType.RCURL_TOKEN);
+                                default -> {
+                                    System.out.println("Invalid token starting with " + c);
+                                    return new Token(Token.TokenType.ERROR_TOKEN);
+                                }
+                            }
+                        }
+                        break;
+                    case IDENTIFIER:
+                        // if the next character is not alphabetic, backup and return the string up until now
+                        if (!Character.isAlphabetic(c)) {
+                            inFile.reset();
+                            state = State.DONE;
+                            currentToken = new Token(Token.TokenType.ID_TOKEN, tokenValue);
+                        } else {
+                            tokenValue += c;
+                        }
+                        break;
+                    case NUMBER:
+                        // if the next character is not a digit, backup and return the number up until now
+                        if (!Character.isDigit(c)) {
+                            inFile.reset();
+                            currentToken = new Token(Token.TokenType.ID_TOKEN, Integer.parseInt(tokenValue));
+                            state = State.DONE;
+                        } else {
+                            tokenValue += c;
+                        }
+                        break;
+                    case BANG:
+                        // if the next character is not an =, it is a parse error
+                        if (c == '=') {
+                            currentToken = new Token(Token.TokenType.NOTEQ_TOKEN);
+                        } else {
+                            inFile.reset();
+                            System.out.println("Invalid token starting with !");
+                            return new Token(Token.TokenType.ERROR_TOKEN);
+                        }
+                        state = State.DONE;
+                        break;
+                    case SLASH:
+                        // if the next character is not a *, this is a divide
+                        if (c == '*') {
+                            state = State.INCOMMENT;
+                        } else {
+                            inFile.reset();
+                            currentToken = new Token(Token.TokenType.DIV_TOKEN);
+                            state = State.DONE;
+                        }
+                        break;
+                    case LESSTHAN:
+                        // Is this < or <=
+                        if (c == '=') {
+                            currentToken = new Token(Token.TokenType.LTE_TOKEN);
+                            state = State.DONE;
+                        } else {
+                            inFile.reset();
+                            currentToken = new Token(Token.TokenType.LT_TOKEN);
+                            state = State.DONE;
+                        }
+                        break;
+                    case GREATERTHAN:
+                        // Is this > or >=
+                        if (c == '=') {
+                            currentToken = new Token(Token.TokenType.GTE_TOKEN);
+                            state = State.DONE;
+                        } else {
+                            inFile.reset();
+                            currentToken = new Token(Token.TokenType.GT_TOKEN);
+                            state = State.DONE;
+                        }
+                        break;
+                    case EQUALS:
+                        // Is this = or ==
+                        if (c == '=') {
+                            currentToken = new Token(Token.TokenType.EQ_TOKEN);
+                            state = State.DONE;
+                        } else {
+                            inFile.reset();
+                            currentToken = new Token(Token.TokenType.ASSIGN_TOKEN);
+                            state = State.DONE;
+                        }
+                        break;
+                    case INCOMMENT:
+                        // Move to second star state
+                        if (c == '*') {
+                            state = State.CLOSECOMMENT;
+                        }
+                        break;
+                    case CLOSECOMMENT:
+                        // if not a /, move back to first star state
+                        if (c != '/') {
+                            state = State.INCOMMENT;
+                        } else {
+                            state = State.START;
+                        }
+                        break;
+                    case DONE:
+                    default:
+                        throw new IOException();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Scan Error");
+            return new Token(Token.TokenType.ERROR_TOKEN);
+        }
+        // We are in the done state
+        if (currentToken != null && currentToken.getType() == Token.TokenType.ID_TOKEN) {
+            currentToken = reservedLookup(currentToken);
+        }
+        return currentToken;
     }
     
     public static void main(String[] args) {

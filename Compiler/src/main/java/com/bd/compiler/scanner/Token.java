@@ -40,7 +40,8 @@ public class Token {
         INT_TOKEN,
         RETURN_TOKEN,
         VOID_TOKEN,
-        WHILE_TOKEN
+        WHILE_TOKEN,
+        ERROR_TOKEN
     }
     
     private TokenType tokenType;
