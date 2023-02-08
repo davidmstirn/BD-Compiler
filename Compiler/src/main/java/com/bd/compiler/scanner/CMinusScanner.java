@@ -46,7 +46,9 @@ public class CMinusScanner implements Scanner {
         CLOSECOMMENT,
         LESSTHAN,
         GREATERTHAN,
-        EQUALS
+        EQUALS,
+        ERROR_ID,
+        ERROR_NUM
     }
     
     private Token reservedLookup(Token input) {
@@ -114,9 +116,15 @@ public class CMinusScanner implements Scanner {
                     case IDENTIFIER:
                         // if the next character is not alphabetic, backup and return the string up until now
                         if (!Character.isAlphabetic(c)) {
-                            inFile.reset();
-                            state = State.DONE;
-                            currentToken = new Token(Token.TokenType.ID_TOKEN, tokenValue);
+                            // if the next character is a digit, go to error
+                            if(Character.isDigit(c)) {
+                                state = State.ERROR_ID;
+                                tokenValue += c;
+                            } else {
+                                inFile.reset();
+                                state = State.DONE;
+                                currentToken = new Token(Token.TokenType.ID_TOKEN, tokenValue);
+                            }
                         } else {
                             tokenValue += c;
                         }
@@ -124,9 +132,15 @@ public class CMinusScanner implements Scanner {
                     case NUMBER:
                         // if the next character is not a digit, backup and return the number up until now
                         if (!Character.isDigit(c)) {
-                            inFile.reset();
-                            currentToken = new Token(Token.TokenType.NUM_TOKEN, Integer.parseInt(tokenValue));
-                            state = State.DONE;
+                            // if the next character is a letter, go to error
+                            if(Character.isAlphabetic(c)) {
+                                state = State.ERROR_NUM;
+                                tokenValue += c;
+                            } else {
+                                inFile.reset();
+                                currentToken = new Token(Token.TokenType.NUM_TOKEN, Integer.parseInt(tokenValue));
+                                state = State.DONE;
+                            }
                         } else {
                             tokenValue += c;
                         }
@@ -138,7 +152,7 @@ public class CMinusScanner implements Scanner {
                         } else {
                             inFile.reset();
                             System.out.println("Invalid token starting with !");
-                            return new Token(Token.TokenType.ERROR_TOKEN);
+                            return new Token(Token.TokenType.ERROR_TOKEN, "!");
                         }
                         state = State.DONE;
                         break;
@@ -199,6 +213,30 @@ public class CMinusScanner implements Scanner {
                             state = State.START;
                         }
                         break;
+                    case ERROR_ID:
+                        // Keep consuming characters until a non-letter or a
+                        //   non-digit is found
+                        if(Character.isAlphabetic(c) || Character.isDigit(c)) {
+                            state = State.ERROR_ID;
+                            tokenValue += c;
+                        } else {
+                            inFile.reset();
+                            System.out.println("Invalid identifier");
+                            return new Token(Token.TokenType.ERROR_TOKEN, tokenValue);    
+                        }
+                        break;
+                    case ERROR_NUM:
+                        // Keep consuming characters until a non-letter or a
+                        //   non-digit is found
+                        if(Character.isAlphabetic(c) || Character.isDigit(c)) {
+                            state = State.ERROR_NUM;
+                            tokenValue += c;
+                        } else {
+                            inFile.reset();
+                            System.out.println("Invalid number");
+                            return new Token(Token.TokenType.ERROR_TOKEN, tokenValue);    
+                        }
+                        break;
                     case DONE:
                     default:
                         throw new IOException();
@@ -221,8 +259,10 @@ public class CMinusScanner implements Scanner {
             return;
         }
         
-        List<Token> tokens = new ArrayList<Token>();
-        try (FileReader fr = new FileReader(args[0])){
+        String filename = args[0];
+        
+        List<Token> tokens = new ArrayList<>();
+        try (FileReader fr = new FileReader(filename)){
             BufferedReader br = new BufferedReader(fr);
             
             Scanner scan = new CMinusScanner(br);
@@ -239,7 +279,8 @@ public class CMinusScanner implements Scanner {
         }
         
         // Output the tokens to a file
-        try(FileWriter fw = new FileWriter("scan.json")){
+        String outputFilename = filename.substring(0, filename.indexOf('.'));
+        try(FileWriter fw = new FileWriter(outputFilename+".json")){
             String json = Token.tokenListToJson(tokens);
             fw.append(json);
         }catch(IOException e){

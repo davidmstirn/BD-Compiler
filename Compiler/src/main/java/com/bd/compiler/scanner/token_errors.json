@@ -1,0 +1,11 @@
+[
+  { "ID_TOKEN" : "abc" },
+  { "ERROR_TOKEN" : "!" },
+  "DIV_TOKEN",
+  "SEMI_TOKEN",
+  "RPAR_TOKEN",
+  { "ERROR_TOKEN" : "himom123" },
+  { "NUM_TOKEN" : "1234" },
+  { "ERROR_TOKEN" : "12b34" },
+  "EOF_TOKEN"
+]
