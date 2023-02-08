@@ -4,6 +4,8 @@
  */
 package com.bd.compiler.scanner;
 
+import java.util.List;
+
 /**
  *
  * @author dajms
@@ -58,5 +60,22 @@ public class Token {
     
     public Object getData() {
         return this.tokenData;
+    }
+    
+    public static String tokenListToJson(List<Token> l){
+        String json = "";
+        json = json + "[\n";
+        for(int i = 0; i < l.size(); i++){
+            Token t = l.get(i);
+            Object d = t.getData();
+            if(i > 0) json = json + ",\n";
+            if(d != null){
+                json = json + "  { \"" + t.getType().name() + "\" : \"" + d.toString() + "\" }";
+            } else {
+                json = json + "  \"" + t.getType().name() + "\"";
+            }
+        }
+        json = json + "\n]";
+        return json;
     }
 }
