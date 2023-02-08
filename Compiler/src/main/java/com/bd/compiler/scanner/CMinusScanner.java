@@ -108,7 +108,7 @@ public class CMinusScanner implements Scanner {
                                 case (char) -1 -> currentToken = new Token(Token.TokenType.EOF_TOKEN);
                                 default -> {
                                     System.out.println("Invalid token starting with " + c);
-                                    return new Token(Token.TokenType.ERROR_TOKEN);
+                                    return new Token(Token.TokenType.ERROR_TOKEN, c);
                                 }
                             }
                         }
