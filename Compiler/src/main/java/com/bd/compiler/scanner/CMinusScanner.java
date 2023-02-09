@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bd.compiler.scanner;
 
 import java.io.BufferedReader;
@@ -12,25 +8,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author dajms
+ * CMinusScanner
+ * File: CMinusScanner.java
+ * A scanner for the C- language. Reads a file and returns tokens when called by
+ * a parser
+ * 
+ * @author Brandon Barker
+ * @author David Stirn
+ * @version 1.0 2/7/23
+ * Copyright of the authors
  */
 public class CMinusScanner implements Scanner {
     private BufferedReader inFile;
     private Token nextToken;
     
-    public CMinusScanner(BufferedReader file) {
+    /**
+     * Creates a scanner that reads an ASCII file and generates tokens
+     * 
+     * @param file the file from which to read ASCII from
+     * @throws ScannerException if the scan failed
+     */
+    public CMinusScanner(BufferedReader file) throws ScannerException {
         inFile = file;
         nextToken = scanToken();
     }
     
-    public Token getNextToken() {
+    /**
+     * Get the next token. Munches the returned token
+     * 
+     * @return the retrieved token
+     * @throws ScannerException if the scan failed
+     */
+    @Override
+    public Token getNextToken() throws ScannerException {
         Token returnToken = nextToken;
         if (nextToken.getType() != Token.TokenType.EOF_TOKEN)
             nextToken = scanToken();
         return returnToken;
     }
     
+    /**
+     * View the next token without munching it
+     * 
+     * @return the viewed token
+     */
+    @Override
     public Token viewNextToken() {
         return nextToken;
     }
@@ -47,10 +69,10 @@ public class CMinusScanner implements Scanner {
         LESSTHAN,
         GREATERTHAN,
         EQUALS,
-        ERROR_ID,
-        ERROR_NUM
+        ERROR
     }
     
+    // If the input token's data is a C- keyword, return that keyword token
     private Token reservedLookup(Token input) {
         return switch ((String)input.getData()) {
             case "if" -> new Token(Token.TokenType.IF_TOKEN);
@@ -63,7 +85,7 @@ public class CMinusScanner implements Scanner {
         };
     }
     
-    private Token scanToken(){
+    private Token scanToken() throws ScannerException {
         Token currentToken = null;
         State state = State.START;
         String tokenValue = "";
@@ -72,6 +94,7 @@ public class CMinusScanner implements Scanner {
                 inFile.mark(1);
                 char c = (char) inFile.read();
                 switch (state) {
+                    // Determine the next state based on the current state and c
                     case START:
                         if (Character.isAlphabetic(c)) {
                             state = State.IDENTIFIER;
@@ -90,8 +113,10 @@ public class CMinusScanner implements Scanner {
                         } else if (c == '=') {
                             state = State.EQUALS;
                         } else if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
-                            break; // If the character is whitespace, ignore it
+                            // If the character is whitespace, ignore it
+                            break;
                         } else {
+                            // The following are all single-character tokens
                             state = State.DONE;
                             switch (c) {
                                 case '+' -> currentToken = new Token(Token.TokenType.PLUS_TOKEN);
@@ -105,8 +130,10 @@ public class CMinusScanner implements Scanner {
                                 case ']' -> currentToken = new Token(Token.TokenType.RSQ_TOKEN);
                                 case '{' -> currentToken = new Token(Token.TokenType.LCURL_TOKEN);
                                 case '}' -> currentToken = new Token(Token.TokenType.RCURL_TOKEN);
+                                // BufferedReader returns -1 at EOF
                                 case (char) -1 -> currentToken = new Token(Token.TokenType.EOF_TOKEN);
                                 default -> {
+                                    // Anything other character is an error
                                     System.out.println("Invalid token starting with " + c);
                                     return new Token(Token.TokenType.ERROR_TOKEN, c);
                                 }
@@ -114,39 +141,41 @@ public class CMinusScanner implements Scanner {
                         }
                         break;
                     case IDENTIFIER:
-                        // if the next character is not alphabetic, backup and return the string up until now
                         if (!Character.isAlphabetic(c)) {
                             // if the next character is a digit, go to error
                             if(Character.isDigit(c)) {
-                                state = State.ERROR_ID;
+                                state = State.ERROR;
                                 tokenValue += c;
                             } else {
+                                // if the next character is not alphanumeric, backup and return the string up until now
                                 inFile.reset();
                                 state = State.DONE;
                                 currentToken = new Token(Token.TokenType.ID_TOKEN, tokenValue);
                             }
                         } else {
+                            // Add alphabetic characters to the data
                             tokenValue += c;
                         }
                         break;
                     case NUMBER:
-                        // if the next character is not a digit, backup and return the number up until now
                         if (!Character.isDigit(c)) {
                             // if the next character is a letter, go to error
                             if(Character.isAlphabetic(c)) {
-                                state = State.ERROR_NUM;
+                                state = State.ERROR;
                                 tokenValue += c;
                             } else {
+                                // if the next character is not alphanumeric, backup and return the string up until now
                                 inFile.reset();
                                 currentToken = new Token(Token.TokenType.NUM_TOKEN, Integer.parseInt(tokenValue));
                                 state = State.DONE;
                             }
                         } else {
+                            // Add digits to the data
                             tokenValue += c;
                         }
                         break;
                     case BANG:
-                        // if the next character is not an =, it is a parse error
+                        // The next character must be =, otherwise it is an error
                         if (c == '=') {
                             currentToken = new Token(Token.TokenType.NOTEQ_TOKEN);
                         } else {
@@ -157,7 +186,7 @@ public class CMinusScanner implements Scanner {
                         state = State.DONE;
                         break;
                     case SLASH:
-                        // if the next character is not a *, this is a divide
+                        // Is this a comment or a divide
                         if (c == '*') {
                             state = State.INCOMMENT;
                         } else {
@@ -200,51 +229,36 @@ public class CMinusScanner implements Scanner {
                         }
                         break;
                     case INCOMMENT:
-                        // Move to second star state
+                        // Move to closecomment state (second star)
                         if (c == '*') {
                             state = State.CLOSECOMMENT;
                         }
                         break;
                     case CLOSECOMMENT:
-                        // if not a /, move back to first star state
+                        // if not a /, move back to incomment state (first star)
                         if (c != '/') {
                             state = State.INCOMMENT;
                         } else {
                             state = State.START;
                         }
                         break;
-                    case ERROR_ID:
+                    case ERROR:
                         // Keep consuming characters until a non-letter or a
                         //   non-digit is found
                         if(Character.isAlphabetic(c) || Character.isDigit(c)) {
-                            state = State.ERROR_ID;
                             tokenValue += c;
                         } else {
                             inFile.reset();
-                            System.out.println("Invalid identifier");
-                            return new Token(Token.TokenType.ERROR_TOKEN, tokenValue);    
-                        }
-                        break;
-                    case ERROR_NUM:
-                        // Keep consuming characters until a non-letter or a
-                        //   non-digit is found
-                        if(Character.isAlphabetic(c) || Character.isDigit(c)) {
-                            state = State.ERROR_NUM;
-                            tokenValue += c;
-                        } else {
-                            inFile.reset();
-                            System.out.println("Invalid number");
                             return new Token(Token.TokenType.ERROR_TOKEN, tokenValue);    
                         }
                         break;
                     case DONE:
                     default:
-                        throw new IOException();
+                        throw new ScannerException();
                 }
             }
         } catch (IOException e) {
-            System.out.println("Scan Error");
-            return new Token(Token.TokenType.ERROR_TOKEN);
+            throw new ScannerException();
         }
         // We are in the done state
         if (currentToken != null && currentToken.getType() == Token.TokenType.ID_TOKEN) {
@@ -258,17 +272,18 @@ public class CMinusScanner implements Scanner {
             System.out.println("ERROR: Scanner requires 1 argument, the path to the C- Code");
             return;
         }
-        
+
         String filename = args[0];
-        
+
         List<Token> tokens = new ArrayList<>();
         try (FileReader fr = new FileReader(filename)){
             BufferedReader br = new BufferedReader(fr);
-            
+
             Scanner scan = new CMinusScanner(br);
-            
+
             Token t = scan.getNextToken();
             tokens.add(t);
+            // Read all of the tokens
             while(t.getType() != Token.TokenType.EOF_TOKEN){
                 t = scan.getNextToken();
                 tokens.add(t);
@@ -276,8 +291,10 @@ public class CMinusScanner implements Scanner {
         } catch (IOException e) {
             System.out.println("Error opening file");
             return;
+        } catch (ScannerException e) {
+            System.out.println("Scan error");
         }
-        
+
         // Output the tokens to a file
         String outputFilename = filename.substring(0, filename.indexOf('.'));
         try(FileWriter fw = new FileWriter(outputFilename+".json")){
@@ -285,7 +302,6 @@ public class CMinusScanner implements Scanner {
             fw.append(json);
         }catch(IOException e){
             System.out.println("Error opening file");
-            return;
         }
     }
 }

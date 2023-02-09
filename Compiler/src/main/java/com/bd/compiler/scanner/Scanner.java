@@ -1,14 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package com.bd.compiler.scanner;
 
 /**
- *
- * @author dajms
+ * Scanner
+ * File: Scanner.java
+ * A scanner that provides tokens to a parser
+ * 
+ * @author Brandon Barker
+ * @author David Stirn
+ * @version 1.0 2/7/23
+ * Copyright of the authors
  */
 public interface Scanner {
-    public Token getNextToken ();
-    public Token viewNextToken ();
+    public Token getNextToken () throws ScannerException;
+    public Token viewNextToken () throws ScannerException;
 }
