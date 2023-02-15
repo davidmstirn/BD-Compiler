@@ -33,7 +33,7 @@ class Yylex {
   private static final int [] ZZ_CMAP_TOP = zzUnpackcmap_top();
 
   private static final String ZZ_CMAP_TOP_PACKED_0 =
-    "\1\0\u10ff\u0100";
+    "\1\0\37\u0100\1\u0200\267\u0100\10\u0300\u1020\u0100";
 
   private static int [] zzUnpackcmap_top() {
     int [] result = new int[4352];
@@ -61,10 +61,16 @@ class Yylex {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\60\0\12\1\3\0\1\2\u01c2\0";
+    "\11\0\1\1\4\2\22\0\1\1\1\3\6\0\1\4"+
+    "\1\5\1\6\1\7\1\10\1\11\1\0\1\12\12\13"+
+    "\1\0\1\14\1\15\1\16\1\17\2\0\32\20\1\21"+
+    "\1\0\1\22\3\0\3\20\1\23\1\24\1\25\1\20"+
+    "\1\26\1\27\2\20\1\30\1\20\1\31\1\32\2\20"+
+    "\1\33\1\34\1\35\1\36\1\37\1\40\3\20\1\41"+
+    "\1\0\1\42\7\0\1\2\u01a2\0\2\2\326\0\u0100\2";
 
   private static int [] zzUnpackcmap_blocks() {
-    int [] result = new int[512];
+    int [] result = new int[1024];
     int offset = 0;
     offset = zzUnpackcmap_blocks(ZZ_CMAP_BLOCKS_PACKED_0, offset, result);
     return result;
@@ -88,10 +94,14 @@ class Yylex {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2";
+    "\1\0\1\1\1\0\1\2\1\3\1\4\1\5\1\6"+
+    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
+    "\1\17\1\20\5\16\1\21\1\22\1\23\1\0\1\24"+
+    "\1\25\1\26\1\16\1\27\4\16\1\0\1\16\1\30"+
+    "\3\16\1\1\1\31\1\16\1\32\2\16\1\33\1\34";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[3];
+    int [] result = new int[50];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -116,10 +126,16 @@ class Yylex {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\3\0\6";
+    "\0\0\0\43\0\106\0\43\0\43\0\43\0\43\0\151"+
+    "\0\43\0\214\0\257\0\43\0\322\0\365\0\u0118\0\151"+
+    "\0\43\0\43\0\u013b\0\u015e\0\u0181\0\u01a4\0\u01c7\0\43"+
+    "\0\43\0\43\0\u01ea\0\43\0\43\0\43\0\u020d\0\151"+
+    "\0\u0230\0\u0253\0\u0276\0\u0299\0\u02bc\0\u02df\0\151\0\u0302"+
+    "\0\u0325\0\u0348\0\u01ea\0\151\0\u036b\0\151\0\u038e\0\u03b1"+
+    "\0\151\0\151";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[3];
+    int [] result = new int[50];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -142,10 +158,35 @@ class Yylex {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\0\1\2\1\3\1\0\1\2\4\0";
+    "\1\0\1\2\1\0\1\3\1\4\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\1\22\1\20\1\23\2\20\1\24\3\20"+
+    "\1\25\3\20\1\26\1\27\1\30\1\31\61\0\1\32"+
+    "\34\0\1\20\7\0\1\20\2\0\16\20\10\0\1\33"+
+    "\22\0\1\2\24\0\1\13\45\0\1\34\42\0\1\35"+
+    "\42\0\1\36\34\0\1\20\7\0\1\20\2\0\5\20"+
+    "\1\37\10\20\12\0\1\20\7\0\1\20\2\0\2\20"+
+    "\1\40\3\20\1\41\7\20\12\0\1\20\7\0\1\20"+
+    "\2\0\1\20\1\42\14\20\12\0\1\20\7\0\1\20"+
+    "\2\0\7\20\1\43\6\20\12\0\1\20\7\0\1\20"+
+    "\2\0\3\20\1\44\12\20\2\0\2\33\1\0\3\33"+
+    "\1\45\34\33\10\0\1\20\7\0\1\20\2\0\11\20"+
+    "\1\46\4\20\12\0\1\20\7\0\1\20\2\0\12\20"+
+    "\1\47\3\20\12\0\1\20\7\0\1\20\2\0\12\20"+
+    "\1\50\3\20\12\0\1\20\7\0\1\20\2\0\4\20"+
+    "\1\51\11\20\12\0\1\20\7\0\1\20\2\0\4\20"+
+    "\1\52\11\20\2\0\2\33\1\0\3\33\1\45\3\33"+
+    "\1\53\30\33\10\0\1\20\7\0\1\20\2\0\1\20"+
+    "\1\54\14\20\12\0\1\20\7\0\1\20\2\0\13\20"+
+    "\1\55\2\20\12\0\1\20\7\0\1\20\2\0\1\56"+
+    "\15\20\12\0\1\20\7\0\1\20\2\0\5\20\1\57"+
+    "\10\20\12\0\1\20\7\0\1\20\2\0\10\20\1\60"+
+    "\5\20\12\0\1\20\7\0\1\20\2\0\1\20\1\61"+
+    "\14\20\12\0\1\20\7\0\1\20\2\0\6\20\1\62"+
+    "\7\20\2\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[9];
+    int [] result = new int[980];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -188,10 +229,12 @@ class Yylex {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\1\1\11";
+    "\1\0\1\11\1\0\4\11\1\1\1\11\2\1\1\11"+
+    "\4\1\2\11\5\1\3\11\1\0\3\11\6\1\1\0"+
+    "\15\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[3];
+    int [] result = new int[50];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -540,7 +583,7 @@ class Yylex {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  public Yytoken yylex() throws java.io.IOException
+  public Token yylex() throws java.io.IOException
   {
     int zzInput;
     int zzAction;
@@ -625,15 +668,145 @@ class Yylex {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
+            { 
+            }
+          // fall through
+          case 29: break;
+          case 2:
+            { return new Token(Token.TokenType.LPAR_TOKEN);
+            }
+          // fall through
+          case 30: break;
+          case 3:
+            { return new Token(Token.TokenType.RPAR_TOKEN);
+            }
+          // fall through
+          case 31: break;
+          case 4:
+            { return new Token(Token.TokenType.MULT_TOKEN);
+            }
+          // fall through
+          case 32: break;
+          case 5:
+            { return new Token(Token.TokenType.PLUS_TOKEN);
+            }
+          // fall through
+          case 33: break;
+          case 6:
+            { return new Token(Token.TokenType.COMMA_TOKEN);
+            }
+          // fall through
+          case 34: break;
+          case 7:
+            { return new Token(Token.TokenType.MINUS_TOKEN);
+            }
+          // fall through
+          case 35: break;
+          case 8:
+            { return new Token(Token.TokenType.DIV_TOKEN);
+            }
+          // fall through
+          case 36: break;
+          case 9:
             { return new Token(Token.TokenType.NUM_TOKEN);
             }
           // fall through
-          case 3: break;
-          case 2:
+          case 37: break;
+          case 10:
+            { return new Token(Token.TokenType.SEMI_TOKEN);
+            }
+          // fall through
+          case 38: break;
+          case 11:
+            { return new Token(Token.TokenType.LT_TOKEN);
+            }
+          // fall through
+          case 39: break;
+          case 12:
             { return new Token(Token.TokenType.ASSIGN_TOKEN);
             }
           // fall through
-          case 4: break;
+          case 40: break;
+          case 13:
+            { return new Token(Token.TokenType.GT_TOKEN);
+            }
+          // fall through
+          case 41: break;
+          case 14:
+            { return new Token(Token.TokenType.ID_TOKEN);
+            }
+          // fall through
+          case 42: break;
+          case 15:
+            { return new Token(Token.TokenType.LSQ_TOKEN);
+            }
+          // fall through
+          case 43: break;
+          case 16:
+            { return new Token(Token.TokenType.RSQ_TOKEN);
+            }
+          // fall through
+          case 44: break;
+          case 17:
+            { return new Token(Token.TokenType.LCURL_TOKEN);
+            }
+          // fall through
+          case 45: break;
+          case 18:
+            { return new Token(Token.TokenType.RCURL_TOKEN);
+            }
+          // fall through
+          case 46: break;
+          case 19:
+            { return new Token(Token.TokenType.NOTEQ_TOKEN);
+            }
+          // fall through
+          case 47: break;
+          case 20:
+            { return new Token(Token.TokenType.LTE_TOKEN);
+            }
+          // fall through
+          case 48: break;
+          case 21:
+            { return new Token(Token.TokenType.EQ_TOKEN);
+            }
+          // fall through
+          case 49: break;
+          case 22:
+            { return new Token(Token.TokenType.GTE_TOKEN);
+            }
+          // fall through
+          case 50: break;
+          case 23:
+            { return new Token(Token.TokenType.IF_TOKEN);
+            }
+          // fall through
+          case 51: break;
+          case 24:
+            { return new Token(Token.TokenType.INT_TOKEN);
+            }
+          // fall through
+          case 52: break;
+          case 25:
+            { return new Token(Token.TokenType.ELSE_TOKEN);
+            }
+          // fall through
+          case 53: break;
+          case 26:
+            { return new Token(Token.TokenType.VOID_TOKEN);
+            }
+          // fall through
+          case 54: break;
+          case 27:
+            { return new Token(Token.TokenType.WHILE_TOKEN);
+            }
+          // fall through
+          case 55: break;
+          case 28:
+            { return new Token(Token.TokenType.RETURN_TOKEN);
+            }
+          // fall through
+          case 56: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
