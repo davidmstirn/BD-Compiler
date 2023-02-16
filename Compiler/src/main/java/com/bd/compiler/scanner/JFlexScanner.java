@@ -4,9 +4,14 @@
 
 package com.bd.compiler.scanner;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 @SuppressWarnings("fallthrough")
-class Yylex {
+public class JFlexScanner implements Scanner, java_cup.runtime.Scanner {
 
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;
@@ -61,13 +66,13 @@ class Yylex {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\12\0\4\1\23\0\1\2\6\0\1\3\1\4\1\5"+
-    "\1\6\1\7\1\10\1\0\1\11\12\12\1\0\1\13"+
-    "\1\14\1\15\1\16\2\0\32\17\1\20\1\0\1\21"+
-    "\3\0\3\17\1\22\1\23\1\24\1\17\1\25\1\26"+
-    "\2\17\1\27\1\17\1\30\1\31\2\17\1\32\1\33"+
-    "\1\34\1\35\1\36\1\37\3\17\1\40\1\0\1\41"+
-    "\7\0\1\1\u01a2\0\2\1\326\0\u0100\1";
+    "\11\0\1\1\4\2\22\0\1\1\1\3\6\0\1\4"+
+    "\1\5\1\6\1\7\1\10\1\11\1\0\1\12\12\13"+
+    "\1\0\1\14\1\15\1\16\1\17\2\0\32\20\1\21"+
+    "\1\0\1\22\3\0\3\20\1\23\1\24\1\25\1\20"+
+    "\1\26\1\27\2\20\1\30\1\20\1\31\1\32\2\20"+
+    "\1\33\1\34\1\35\1\36\1\37\1\40\3\20\1\41"+
+    "\1\0\1\42\7\0\1\2\u01a2\0\2\2\326\0\u0100\2";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -94,14 +99,14 @@ class Yylex {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
-    "\5\15\1\20\1\21\1\22\1\0\1\23\1\24\1\25"+
-    "\1\15\1\26\4\15\1\0\1\15\1\27\3\15\1\30"+
-    "\1\31\1\15\1\32\2\15\1\33\1\34";
+    "\1\0\1\1\1\0\1\2\1\3\1\4\1\5\1\6"+
+    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
+    "\1\17\1\20\5\16\1\21\1\22\1\23\1\0\1\24"+
+    "\1\25\1\26\1\16\1\27\4\16\1\0\1\16\1\30"+
+    "\3\16\1\1\1\31\1\16\1\32\2\16\1\33\1\34";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[49];
+    int [] result = new int[50];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -126,16 +131,16 @@ class Yylex {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\42\0\104\0\104\0\104\0\104\0\146\0\104"+
-    "\0\210\0\252\0\104\0\314\0\356\0\u0110\0\146\0\104"+
-    "\0\104\0\u0132\0\u0154\0\u0176\0\u0198\0\u01ba\0\104\0\104"+
-    "\0\104\0\u01dc\0\104\0\104\0\104\0\u01fe\0\146\0\u0220"+
-    "\0\u0242\0\u0264\0\u0286\0\u02a8\0\u02ca\0\146\0\u02ec\0\u030e"+
-    "\0\u0330\0\u01dc\0\146\0\u0352\0\146\0\u0374\0\u0396\0\146"+
-    "\0\146";
+    "\0\0\0\43\0\106\0\43\0\43\0\43\0\43\0\151"+
+    "\0\43\0\214\0\257\0\43\0\322\0\365\0\u0118\0\151"+
+    "\0\43\0\43\0\u013b\0\u015e\0\u0181\0\u01a4\0\u01c7\0\43"+
+    "\0\43\0\43\0\u01ea\0\43\0\43\0\43\0\u020d\0\151"+
+    "\0\u0230\0\u0253\0\u0276\0\u0299\0\u02bc\0\u02df\0\151\0\u0302"+
+    "\0\u0325\0\u0348\0\u01ea\0\151\0\u036b\0\151\0\u038e\0\u03b1"+
+    "\0\151\0\151";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[49];
+    int [] result = new int[50];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -158,34 +163,35 @@ class Yylex {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\0\1\2\1\3\1\4\1\5\1\6\1\7\1\10"+
-    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
-    "\1\21\1\17\1\22\2\17\1\23\3\17\1\24\3\17"+
-    "\1\25\1\26\1\27\1\30\15\0\1\31\75\0\1\17"+
-    "\7\0\1\17\2\0\16\17\7\0\1\32\46\0\1\12"+
-    "\44\0\1\33\41\0\1\34\41\0\1\35\33\0\1\17"+
-    "\7\0\1\17\2\0\5\17\1\36\10\17\11\0\1\17"+
-    "\7\0\1\17\2\0\2\17\1\37\3\17\1\40\7\17"+
-    "\11\0\1\17\7\0\1\17\2\0\1\17\1\41\14\17"+
-    "\11\0\1\17\7\0\1\17\2\0\7\17\1\42\6\17"+
-    "\11\0\1\17\7\0\1\17\2\0\3\17\1\43\12\17"+
-    "\2\0\1\32\1\0\3\32\1\44\34\32\7\0\1\17"+
-    "\7\0\1\17\2\0\11\17\1\45\4\17\11\0\1\17"+
-    "\7\0\1\17\2\0\12\17\1\46\3\17\11\0\1\17"+
-    "\7\0\1\17\2\0\12\17\1\47\3\17\11\0\1\17"+
-    "\7\0\1\17\2\0\4\17\1\50\11\17\11\0\1\17"+
-    "\7\0\1\17\2\0\4\17\1\51\11\17\2\0\1\32"+
-    "\1\0\3\32\1\44\3\32\1\52\30\32\7\0\1\17"+
-    "\7\0\1\17\2\0\1\17\1\53\14\17\11\0\1\17"+
-    "\7\0\1\17\2\0\13\17\1\54\2\17\11\0\1\17"+
-    "\7\0\1\17\2\0\1\55\15\17\11\0\1\17\7\0"+
-    "\1\17\2\0\5\17\1\56\10\17\11\0\1\17\7\0"+
-    "\1\17\2\0\10\17\1\57\5\17\11\0\1\17\7\0"+
-    "\1\17\2\0\1\17\1\60\14\17\11\0\1\17\7\0"+
-    "\1\17\2\0\6\17\1\61\7\17\2\0";
+    "\1\0\1\2\1\0\1\3\1\4\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\1\22\1\20\1\23\2\20\1\24\3\20"+
+    "\1\25\3\20\1\26\1\27\1\30\1\31\61\0\1\32"+
+    "\34\0\1\20\7\0\1\20\2\0\16\20\10\0\1\33"+
+    "\22\0\1\2\24\0\1\13\45\0\1\34\42\0\1\35"+
+    "\42\0\1\36\34\0\1\20\7\0\1\20\2\0\5\20"+
+    "\1\37\10\20\12\0\1\20\7\0\1\20\2\0\2\20"+
+    "\1\40\3\20\1\41\7\20\12\0\1\20\7\0\1\20"+
+    "\2\0\1\20\1\42\14\20\12\0\1\20\7\0\1\20"+
+    "\2\0\7\20\1\43\6\20\12\0\1\20\7\0\1\20"+
+    "\2\0\3\20\1\44\12\20\2\0\2\33\1\0\3\33"+
+    "\1\45\34\33\10\0\1\20\7\0\1\20\2\0\11\20"+
+    "\1\46\4\20\12\0\1\20\7\0\1\20\2\0\12\20"+
+    "\1\47\3\20\12\0\1\20\7\0\1\20\2\0\12\20"+
+    "\1\50\3\20\12\0\1\20\7\0\1\20\2\0\4\20"+
+    "\1\51\11\20\12\0\1\20\7\0\1\20\2\0\4\20"+
+    "\1\52\11\20\2\0\2\33\1\0\3\33\1\45\3\33"+
+    "\1\53\30\33\10\0\1\20\7\0\1\20\2\0\1\20"+
+    "\1\54\14\20\12\0\1\20\7\0\1\20\2\0\13\20"+
+    "\1\55\2\20\12\0\1\20\7\0\1\20\2\0\1\56"+
+    "\15\20\12\0\1\20\7\0\1\20\2\0\5\20\1\57"+
+    "\10\20\12\0\1\20\7\0\1\20\2\0\10\20\1\60"+
+    "\5\20\12\0\1\20\7\0\1\20\2\0\1\20\1\61"+
+    "\14\20\12\0\1\20\7\0\1\20\2\0\6\20\1\62"+
+    "\7\20\2\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[952];
+    int [] result = new int[980];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -228,11 +234,12 @@ class Yylex {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\4\11\1\1\1\11\2\1\1\11\4\1\2\11"+
-    "\5\1\3\11\1\0\3\11\6\1\1\0\15\1";
+    "\1\0\1\11\1\0\4\11\1\1\1\11\2\1\1\11"+
+    "\4\1\2\11\5\1\3\11\1\0\3\11\6\1\1\0"+
+    "\15\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[49];
+    int [] result = new int[50];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -292,11 +299,9 @@ class Yylex {
   private int zzFinalHighSurrogate = 0;
 
   /** Number of newlines encountered up to the start of the matched text. */
-  @SuppressWarnings("unused")
   private int yyline;
 
   /** Number of characters from the last newline up to the start of the matched text. */
-  @SuppressWarnings("unused")
   private int yycolumn;
 
   /** Number of characters up to the start of the matched text. */
@@ -308,8 +313,53 @@ class Yylex {
   private boolean zzAtBOL = true;
 
   /** Whether the user-EOF-code has already been executed. */
-  @SuppressWarnings("unused")
   private boolean zzEOFDone;
+
+  /* user code: */
+    private BufferedReader inFile;
+    private Token nextToken;
+    
+    /**
+     * Creates a scanner that reads an ASCII file and generates tokens
+     * 
+     * @param file the file from which to read ASCII from
+     * @throws ScannerException if the scan failed
+     */
+    public JFlexScanner(BufferedReader file) throws ScannerException {
+        inFile = file;
+        try {
+            nextToken = next_token();
+        } catch (IOException e) {
+            throw new ScannerException();
+        }    }
+    
+    /**
+     * Get the next token. Munches the returned token
+     * 
+     * @return the retrieved token
+     * @throws ScannerException if the scan failed
+     */
+    @Override
+    public Token getNextToken() throws ScannerException {
+        Token returnToken = nextToken;
+        if (nextToken.getType() != Token.TokenType.EOF_TOKEN)
+            try {
+                nextToken = next_token();
+            } catch (IOException e) {
+                throw new ScannerException();
+            }
+        return returnToken;
+    }
+    
+    /**
+     * View the next token without munching it
+     * 
+     * @return the viewed token
+     */
+    @Override
+    public Token viewNextToken() {
+        return nextToken;
+    }
 
 
   /**
@@ -317,7 +367,7 @@ class Yylex {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  Yylex(java.io.Reader in) {
+  public JFlexScanner(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -572,6 +622,18 @@ class Yylex {
   }
 
 
+  /**
+   * Contains user EOF-code, which will be executed exactly once,
+   * when the end of file is reached
+   */
+  private void zzDoEOF() throws java.io.IOException {
+    if (!zzEOFDone) {
+      zzEOFDone = true;
+    
+  yyclose();    }
+  }
+
+
 
 
   /**
@@ -581,7 +643,7 @@ class Yylex {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  public Token yylex() throws java.io.IOException
+  @Override  public java_cup.runtime.Symbol next_token() throws java.io.IOException
   {
     int zzInput;
     int zzAction;
@@ -599,6 +661,63 @@ class Yylex {
     while (true) {
       zzMarkedPosL = zzMarkedPos;
 
+      boolean zzR = false;
+      int zzCh;
+      int zzCharCount;
+      for (zzCurrentPosL = zzStartRead  ;
+           zzCurrentPosL < zzMarkedPosL ;
+           zzCurrentPosL += zzCharCount ) {
+        zzCh = Character.codePointAt(zzBufferL, zzCurrentPosL, zzMarkedPosL);
+        zzCharCount = Character.charCount(zzCh);
+        switch (zzCh) {
+        case '\u000B':  // fall through
+        case '\u000C':  // fall through
+        case '\u0085':  // fall through
+        case '\u2028':  // fall through
+        case '\u2029':
+          yyline++;
+          yycolumn = 0;
+          zzR = false;
+          break;
+        case '\r':
+          yyline++;
+          yycolumn = 0;
+          zzR = true;
+          break;
+        case '\n':
+          if (zzR)
+            zzR = false;
+          else {
+            yyline++;
+            yycolumn = 0;
+          }
+          break;
+        default:
+          zzR = false;
+          yycolumn += zzCharCount;
+        }
+      }
+
+      if (zzR) {
+        // peek one character ahead if it is
+        // (if we have counted one line too much)
+        boolean zzPeek;
+        if (zzMarkedPosL < zzEndReadL)
+          zzPeek = zzBufferL[zzMarkedPosL] == '\n';
+        else if (zzAtEOF)
+          zzPeek = false;
+        else {
+          boolean eof = zzRefill();
+          zzEndReadL = zzEndRead;
+          zzMarkedPosL = zzMarkedPos;
+          zzBufferL = zzBuffer;
+          if (eof)
+            zzPeek = false;
+          else
+            zzPeek = zzBufferL[zzMarkedPosL] == '\n';
+        }
+        if (zzPeek) yyline--;
+      }
       zzAction = -1;
 
       zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
@@ -661,127 +780,128 @@ class Yylex {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
-        return null;
+            zzDoEOF();
+          { return new java_cup.runtime.Symbol(sym.EOF); }
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return new Token(Token.TokenType.LPAR_TOKEN);
+            { 
             }
           // fall through
           case 29: break;
           case 2:
-            { return new Token(Token.TokenType.RPAR_TOKEN);
+            { return new Token(Token.TokenType.LPAR_TOKEN);
             }
           // fall through
           case 30: break;
           case 3:
-            { return new Token(Token.TokenType.MULT_TOKEN);
+            { return new Token(Token.TokenType.RPAR_TOKEN);
             }
           // fall through
           case 31: break;
           case 4:
-            { return new Token(Token.TokenType.PLUS_TOKEN);
+            { return new Token(Token.TokenType.MULT_TOKEN);
             }
           // fall through
           case 32: break;
           case 5:
-            { return new Token(Token.TokenType.COMMA_TOKEN);
+            { return new Token(Token.TokenType.PLUS_TOKEN);
             }
           // fall through
           case 33: break;
           case 6:
-            { return new Token(Token.TokenType.MINUS_TOKEN);
+            { return new Token(Token.TokenType.COMMA_TOKEN);
             }
           // fall through
           case 34: break;
           case 7:
-            { return new Token(Token.TokenType.DIV_TOKEN);
+            { return new Token(Token.TokenType.MINUS_TOKEN);
             }
           // fall through
           case 35: break;
           case 8:
-            { return new Token(Token.TokenType.NUM_TOKEN);
+            { return new Token(Token.TokenType.DIV_TOKEN);
             }
           // fall through
           case 36: break;
           case 9:
-            { return new Token(Token.TokenType.SEMI_TOKEN);
+            { return new Token(Token.TokenType.NUM_TOKEN, yytext());
             }
           // fall through
           case 37: break;
           case 10:
-            { return new Token(Token.TokenType.LT_TOKEN);
+            { return new Token(Token.TokenType.SEMI_TOKEN);
             }
           // fall through
           case 38: break;
           case 11:
-            { return new Token(Token.TokenType.ASSIGN_TOKEN);
+            { return new Token(Token.TokenType.LT_TOKEN);
             }
           // fall through
           case 39: break;
           case 12:
-            { return new Token(Token.TokenType.GT_TOKEN);
+            { return new Token(Token.TokenType.ASSIGN_TOKEN);
             }
           // fall through
           case 40: break;
           case 13:
-            { return new Token(Token.TokenType.ID_TOKEN);
+            { return new Token(Token.TokenType.GT_TOKEN);
             }
           // fall through
           case 41: break;
           case 14:
-            { return new Token(Token.TokenType.LSQ_TOKEN);
+            { return new Token(Token.TokenType.ID_TOKEN, yytext());
             }
           // fall through
           case 42: break;
           case 15:
-            { return new Token(Token.TokenType.RSQ_TOKEN);
+            { return new Token(Token.TokenType.LSQ_TOKEN);
             }
           // fall through
           case 43: break;
           case 16:
-            { return new Token(Token.TokenType.LCURL_TOKEN);
+            { return new Token(Token.TokenType.RSQ_TOKEN);
             }
           // fall through
           case 44: break;
           case 17:
-            { return new Token(Token.TokenType.RCURL_TOKEN);
+            { return new Token(Token.TokenType.LCURL_TOKEN);
             }
           // fall through
           case 45: break;
           case 18:
-            { return new Token(Token.TokenType.NOTEQ_TOKEN);
+            { return new Token(Token.TokenType.RCURL_TOKEN);
             }
           // fall through
           case 46: break;
           case 19:
-            { return new Token(Token.TokenType.LTE_TOKEN);
+            { return new Token(Token.TokenType.NOTEQ_TOKEN);
             }
           // fall through
           case 47: break;
           case 20:
-            { return new Token(Token.TokenType.EQ_TOKEN);
+            { return new Token(Token.TokenType.LTE_TOKEN);
             }
           // fall through
           case 48: break;
           case 21:
-            { return new Token(Token.TokenType.GTE_TOKEN);
+            { return new Token(Token.TokenType.EQ_TOKEN);
             }
           // fall through
           case 49: break;
           case 22:
-            { return new Token(Token.TokenType.IF_TOKEN);
+            { return new Token(Token.TokenType.GTE_TOKEN);
             }
           // fall through
           case 50: break;
           case 23:
-            { return new Token(Token.TokenType.INT_TOKEN);
+            { return new Token(Token.TokenType.IF_TOKEN);
             }
           // fall through
           case 51: break;
           case 24:
-            { return new Token(Token.TokenType.COMMENT_TOKEN);
+            { return new Token(Token.TokenType.INT_TOKEN);
             }
           // fall through
           case 52: break;
@@ -807,6 +927,108 @@ class Yylex {
           case 56: break;
           default:
             zzScanError(ZZ_NO_MATCH);
+        }
+      }
+    }
+  }
+
+  /**
+   * Converts an int token code into the name of the
+   * token by reflection on the cup symbol class/interface sym
+   */
+  private static String getTokenName(int token) {
+    try {
+      java.lang.reflect.Field [] classFields = sym.class.getFields();
+      for (int i = 0; i < classFields.length; i++) {
+        if (classFields[i].getInt(null) == token) {
+          return classFields[i].getName();
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace(System.err);
+    }
+
+    return "UNKNOWN TOKEN";
+  }
+
+  /**
+   * Same as next_token but also prints the token to standard out
+   * for debugging.
+   */
+  public java_cup.runtime.Symbol debug_next_token() throws java.io.IOException {
+    java_cup.runtime.Symbol s = next_token();
+    System.out.println( "line:" + (yyline+1) + " col:" + (yycolumn+1) + " --"+ yytext() + "--" + getTokenName(s.sym) + "--");
+    return s;
+  }
+
+  /**
+   * Runs the scanner on input files.
+   *
+   * This main method is the debugging routine for the scanner.
+   * It prints debugging information about each returned token to
+   * System.out until the end of file is reached, or an error occured.
+   *
+   * @param argv   the command line, contains the filenames to run
+   *               the scanner on.
+   */
+  public static void main(String[] argv) {
+    if (argv.length == 0) {
+      System.out.println("Usage : java JFlexScanner [ --encoding <name> ] <inputfile(s)>");
+    }
+    else {
+      int firstFilePos = 0;
+      String encodingName = "UTF-8";
+      if (argv[0].equals("--encoding")) {
+        firstFilePos = 2;
+        encodingName = argv[1];
+        try {
+          // Side-effect: is encodingName valid?
+          java.nio.charset.Charset.forName(encodingName);
+        } catch (Exception e) {
+          System.out.println("Invalid encoding '" + encodingName + "'");
+          return;
+        }
+      }
+      for (int i = firstFilePos; i < argv.length; i++) {
+        JFlexScanner scanner = null;
+        java.io.FileInputStream stream = null;
+        java.io.Reader reader = null;
+        try {
+          stream = new java.io.FileInputStream(argv[i]);
+          reader = new java.io.InputStreamReader(stream, encodingName);
+          scanner = new JFlexScanner(reader);
+          while ( !scanner.zzAtEOF ) scanner.debug_next_token();
+        }
+        catch (java.io.FileNotFoundException e) {
+          System.out.println("File not found : \""+argv[i]+"\"");
+        }
+        catch (java.io.IOException e) {
+          System.out.println("IO error scanning file \""+argv[i]+"\"");
+          System.out.println(e);
+        }
+        catch (Exception e) {
+          System.out.println("Unexpected exception:");
+          e.printStackTrace();
+        }
+        finally {
+          if (reader != null) {
+            try {
+              reader.close();
+            }
+            catch (java.io.IOException e) {
+              System.out.println("IO error closing file \""+argv[i]+"\"");
+              System.out.println(e);
+            }
+          }
+          if (stream != null) {
+            try {
+              stream.close();
+            }
+            catch (java.io.IOException e) {
+              System.out.println("IO error closing file \""+argv[i]+"\"");
+              System.out.println(e);
+            }
+          }
         }
       }
     }

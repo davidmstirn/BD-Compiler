@@ -1,6 +1,71 @@
 package com.bd.compiler.scanner;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 %%
+
+%public
+%class JFlexScanner
+%implements Scanner
+
+%unicode
+
+%line
+%column
+
+%cup
+%cupdebug
+
+%{
+    private BufferedReader inFile;
+    private Token nextToken;
+    
+    /**
+     * Creates a scanner that reads an ASCII file and generates tokens
+     * 
+     * @param file the file from which to read ASCII from
+     * @throws ScannerException if the scan failed
+     */
+    public JFlexScanner(BufferedReader file) throws ScannerException {
+        inFile = file;
+        try {
+            nextToken = next_token();
+        } catch (IOException e) {
+            throw new ScannerException();
+        }    }
+    
+    /**
+     * Get the next token. Munches the returned token
+     * 
+     * @return the retrieved token
+     * @throws ScannerException if the scan failed
+     */
+    @Override
+    public Token getNextToken() throws ScannerException {
+        Token returnToken = nextToken;
+        if (nextToken.getType() != Token.TokenType.EOF_TOKEN)
+            try {
+                nextToken = next_token();
+            } catch (IOException e) {
+                throw new ScannerException();
+            }
+        return returnToken;
+    }
+    
+    /**
+     * View the next token without munching it
+     * 
+     * @return the viewed token
+     */
+    @Override
+    public Token viewNextToken() {
+        return nextToken;
+    }
+%}
+
 letter = [a-z,A-Z]
 digit = [0-9]
 
@@ -39,5 +104,5 @@ digit = [0-9]
 "void" {return new Token(Token.TokenType.VOID_TOKEN);}
 "while" {return new Token(Token.TokenType.WHILE_TOKEN);}
 
-{letter}+ {return new Token(Token.TokenType.ID_TOKEN);}
-{digit}+ {return new Token(Token.TokenType.NUM_TOKEN);}
+{letter}+ {return new Token(Token.TokenType.ID_TOKEN, yytext());}
+{digit}+ {return new Token(Token.TokenType.NUM_TOKEN, yytext());}
