@@ -4,20 +4,20 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 %%
 
 %public
 %class JFlexScanner
 %implements Scanner
+%type Token
 
 %unicode
 
 %line
 %column
-
-%cup
-%cupdebug
 
 %{
     private BufferedReader inFile;
@@ -32,7 +32,7 @@ import java.io.IOException;
     public JFlexScanner(BufferedReader file) throws ScannerException {
         inFile = file;
         try {
-            nextToken = next_token();
+            nextToken = yylex();
         } catch (IOException e) {
             throw new ScannerException();
         }    }
@@ -48,7 +48,7 @@ import java.io.IOException;
         Token returnToken = nextToken;
         if (nextToken.getType() != Token.TokenType.EOF_TOKEN)
             try {
-                nextToken = next_token();
+                nextToken = yylex();
             } catch (IOException e) {
                 throw new ScannerException();
             }
@@ -64,10 +64,49 @@ import java.io.IOException;
     public Token viewNextToken() {
         return nextToken;
     }
+
+    public static void main(String[] args) {
+        if (args.length != 1){
+            System.out.println("ERROR: Scanner requires 1 argument, the path to the C- Code");
+            return;
+        }
+
+        String filename = args[0];
+
+        List<Token> tokens = new ArrayList<>();
+        try (FileReader fr = new FileReader(filename)){
+            BufferedReader br = new BufferedReader(fr);
+
+            Scanner scan = new CMinusScanner(br);
+
+            Token t = scan.getNextToken();
+            tokens.add(t);
+            // Read all of the tokens
+            while(t.getType() != Token.TokenType.EOF_TOKEN){
+                t = scan.getNextToken();
+                tokens.add(t);
+            }
+        } catch (IOException e) {
+            System.out.println("Error opening input file");
+            return;
+        } catch (ScannerException e) {
+            System.out.println("Scan error");
+        }
+
+        // Output the tokens to a file
+        String outputFilename = filename.substring(0, filename.indexOf('.'));
+        try(FileWriter fw = new FileWriter(outputFilename+"2.json")){
+            String json = Token.tokenListToJson(tokens);
+            fw.append(json);
+        }catch(IOException e){
+            System.out.println("Error opening output file");
+        }
+    }
 %}
 
 letter = [a-z,A-Z]
 digit = [0-9]
+Comment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 
 %%
 
@@ -94,8 +133,6 @@ digit = [0-9]
 " "     {}
 "\t"    {}
 "/n"    {}
-"/*" .* "*/" {}
-
 
 "if" {return new Token(Token.TokenType.IF_TOKEN);}
 "else" {return new Token(Token.TokenType.ELSE_TOKEN);}
@@ -103,6 +140,8 @@ digit = [0-9]
 "return" {return new Token(Token.TokenType.RETURN_TOKEN);}
 "void" {return new Token(Token.TokenType.VOID_TOKEN);}
 "while" {return new Token(Token.TokenType.WHILE_TOKEN);}
+
+{Comment}    {}
 
 {letter}+ {return new Token(Token.TokenType.ID_TOKEN, yytext());}
 {digit}+ {return new Token(Token.TokenType.NUM_TOKEN, yytext());}
