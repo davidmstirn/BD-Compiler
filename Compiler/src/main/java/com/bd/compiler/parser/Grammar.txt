@@ -1,0 +1,35 @@
+program -> declaration-list
+declaration-list -> declaration {declaration}
+declaration -> type-specifier ID declaration'
+declaration' -> var-declaration | fun-declaration
+var-declaration ->  ; | [ NUM ] ;
+type-specifier -> int | void
+fun-declaration -> ( params ) compound-stmt
+params -> param-list | void
+param-list -> param {, param}
+param -> type-specifier ID [[ ]]
+compound-stmt -> { local-declarations statement-list }
+local-declarations -> empty {var-declaration}
+statement-list -> empty {statement}
+statement -> expression-stmt | compound-stmt | selection-stmt | iteration-stmt | return-stmt
+expression-stmt -> expression ; | ;
+selection-stmt -> if ( expression ) statement [else statement]
+iteration-stmt -> while  ( expression ) statement
+return-stmt -> return return-stmt'
+return-stmt' -> ; | expression ;
+expression -> ID var = expression | simple-expression
+var -> empty [[ expression ]]
+simple-expression -> additive-expression [relop additive-expression]
+relop -> <= | < | > | >= | == | !=
+additive-expression -> term {addop term}
+addop -> + | -
+term -> factor {mulop factor}
+mulop -> * | /
+factor -> ( expression ) | ID varcall | NUM
+varcall -> var | call
+call -> ( args )
+args -> arg-list | empty
+arg-list -> expression {, expression}
+
+
+TODO: Make first and follow sets, ensure no ambiguity
