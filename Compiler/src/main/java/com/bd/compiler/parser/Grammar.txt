@@ -1,8 +1,7 @@
 program -> declaration-list
 declaration-list -> declaration {declaration}
-declaration -> type-specifier ID declaration'
-declaration' -> var-declaration | fun-declaration
-var-declaration ->  ; | [ NUM ] ;
+declaration -> VOID ID fun-declaration | INT ID declaration'
+declaration' -> ; | [ NUM ] ; | fun-declaration
 type-specifier -> int | void
 fun-declaration -> ( params ) compound-stmt
 params -> param-list | void
@@ -17,18 +16,20 @@ selection-stmt -> if ( expression ) statement [else statement]
 iteration-stmt -> while  ( expression ) statement
 return-stmt -> return return-stmt'
 return-stmt' -> ; | expression ;
-expression -> ID var = expression | simple-expression
-var -> empty [[ expression ]]
-simple-expression -> additive-expression [relop additive-expression]
+expression -> ID expression' | NUM simple-expression | ( expression ) simple-expression
+expression' -> = expression | [ expression ] E'' | ( args ) simple-expression
+expression'' -> = E | simple-expression
+simple-expression -> additive-expression' [relop additive-expression]
 relop -> <= | < | > | >= | == | !=
 additive-expression -> term {addop term}
+additive-expression' -> term' { addop  term }
 addop -> + | -
 term -> factor {mulop factor}
+term' -> { mulop factor }
 mulop -> * | /
 factor -> ( expression ) | ID varcall | NUM
-varcall -> var | call
-call -> ( args )
-args -> arg-list | empty
+varcall -> [[ expression ]] | ( args )
+args -> [arg-list]
 arg-list -> expression {, expression}
 
 
