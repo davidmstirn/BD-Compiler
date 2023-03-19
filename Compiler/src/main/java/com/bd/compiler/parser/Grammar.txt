@@ -1,15 +1,17 @@
 program -> declaration-list
 declaration-list -> declaration {declaration}
-declaration -> VOID ID fun-declaration | INT ID declaration'
-declaration' -> ; | [ NUM ] ; | fun-declaration
+declaration -> void ID fun-declaration | int ID declaration'
+declaration' -> var-declaration' | fun-declaration
+var-declaration -> type-specifier var-declaration'
+var-declaration' -> ; | [ NUM ] ;
 type-specifier -> int | void
 fun-declaration -> ( params ) compound-stmt
 params -> param-list | void
 param-list -> param {, param}
-param -> type-specifier ID [[ ]]
+param -> int ID [[ ]]
 compound-stmt -> { local-declarations statement-list }
-local-declarations -> empty {var-declaration}
-statement-list -> empty {statement}
+local-declarations -> ε | var-declaration {var-declaration}
+statement-list -> ε | statement {statement}
 statement -> expression-stmt | compound-stmt | selection-stmt | iteration-stmt | return-stmt
 expression-stmt -> expression ; | ;
 selection-stmt -> if ( expression ) statement [else statement]
@@ -17,20 +19,17 @@ iteration-stmt -> while  ( expression ) statement
 return-stmt -> return return-stmt'
 return-stmt' -> ; | expression ;
 expression -> ID expression' | NUM simple-expression | ( expression ) simple-expression
-expression' -> = expression | [ expression ] E'' | ( args ) simple-expression
-expression'' -> = E | simple-expression
+expression' -> = expression | [ expression ] expression'' | ( args ) simple-expression
+expression'' -> = expression | simple-expression
 simple-expression -> additive-expression' [relop additive-expression]
 relop -> <= | < | > | >= | == | !=
 additive-expression -> term {addop term}
-additive-expression' -> term' { addop  term }
+additive-expression' -> term' {addop term}
 addop -> + | -
 term -> factor {mulop factor}
-term' -> { mulop factor }
+term' -> ε | mulop factor {mulop factor}
 mulop -> * | /
 factor -> ( expression ) | ID varcall | NUM
-varcall -> [[ expression ]] | ( args )
-args -> [arg-list]
+varcall -> ε | [ expression ] | ( args )
+args -> ε | arg-list
 arg-list -> expression {, expression}
-
-
-TODO: Make first and follow sets, ensure no ambiguity

@@ -1,0 +1,73 @@
+first(program) = {void, int}
+first(declaration-list) = {void, int}
+first(declaration) = {void, int}
+first(declaration') = {;, [, (}
+first(var-declaration) = {int, void}
+first(var-declaration') = {;, [}
+first(type-specifier) = {int, void}
+first(fun-declaration) = {(}
+first(params) = {void, int}
+first(param-list) = {int}
+first(param) = {int}
+first(compound-stmt) = {'{'}
+first(local-declarations) = {ε, int, void}
+first(statement-list) = {ε, '{', ;, if, while, return, id, num, (}
+first(statement) = {'{', ;, if, while, return, id, num, (}
+first(expression-stmt) = {;, id, num, (}
+first(selection-stmt) = {if}
+first(iteration-stmt) = {while}
+first(return-stmt) = {return}
+first(return-stmt') = {;, id, num, (}
+first(expression) = {id, num, (}
+first(expression') = {=, [, (}
+first(expression'') = {=, ε, *, /}
+first(simple-expression) = {ε, *, /}
+first(relop) = {<=, <, >, >=, ==, !=}
+first(additive-expression) = {(, id, num}
+first(additive-expression') = {ε, *, /}
+first(addop) = {+, -}
+first(term) = {(, id, num}
+first(term') = {ε, *, /}
+first(mulop) = {*, /}
+first(factor) = {(, id, num}
+first(varcall) = {[, (, ε}
+first(args) = {ε, id, num, (}
+first(arg-list) = {id, num, (}
+
+follow(program) = {
+follow(declaration-list) = {
+follow(declaration) = {
+follow(declaration') = {
+follow(var-declaration) = {
+follow(var-declaration') = {
+follow(type-specifier) = {
+follow(fun-declaration) = {
+follow(params) = {
+follow(param-list) = {
+follow(param) = {
+follow(compound-stmt) = {
+follow(local-declarations) = {
+follow(statement-list) = {
+follow(statement) = {
+follow(expression-stmt) = {
+follow(selection-stmt) = {
+follow(iteration-stmt) = {
+follow(return-stmt) = {
+follow(return-stmt') = {
+follow(expression) = {
+follow(expression') = {
+follow(expression'') = {
+follow(simple-expression) = {
+follow(relop) = {
+follow(additive-expression) = {
+follow(additive-expression') = {
+follow(addop) = {
+follow(term) = {
+follow(term') = {
+follow(mulop) = {
+follow(factor) = {
+follow(varcall) = {
+follow(args) = {
+follow(arg-list) = {
+
+TODO: Make follow sets, check that if epsilon in first, first does not intersect follow
