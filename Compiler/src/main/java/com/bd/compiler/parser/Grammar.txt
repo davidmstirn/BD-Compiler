@@ -15,7 +15,7 @@ statement-list -> ε | statement {statement}
 statement -> expression-stmt | compound-stmt | selection-stmt | iteration-stmt | return-stmt
 expression-stmt -> expression ; | ;
 selection-stmt -> if ( expression ) statement [else statement]
-iteration-stmt -> while  ( expression ) statement
+iteration-stmt -> while ( expression ) statement
 return-stmt -> return return-stmt'
 return-stmt' -> ; | expression ;
 expression -> ID expression' | NUM simple-expression | ( expression ) simple-expression
