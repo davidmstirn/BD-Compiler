@@ -28,5 +28,5 @@ term' -> {mulop factor}
 mulop -> * | /
 factor -> ( expression ) | ID varcall | NUM
 varcall -> ε | [ expression ] | ( args )
-args -> ε | arg-list
+args -> [arg-list]
 arg-list -> expression {, expression}
