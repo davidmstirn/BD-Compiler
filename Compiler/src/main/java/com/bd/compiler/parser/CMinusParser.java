@@ -6,12 +6,9 @@ import com.bd.compiler.scanner.ScannerException;
 import com.bd.compiler.scanner.Token;
 import com.bd.compiler.scanner.Token.TokenType;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +27,11 @@ public class CMinusParser implements Parser {
     private String file;
     private Token currentToken;
     private Scanner scanner;
+    
+    public enum TypeSpecifier {
+        VOID_TYPE,
+        INT_TYPE
+    }
 
     public CMinusParser(String filename){
         file = filename;
@@ -74,7 +76,7 @@ public class CMinusParser implements Parser {
         if (currentToken.getType() == TokenType.VOID_TOKEN){
             matchToken(TokenType.VOID_TOKEN);
             Token id = matchToken(TokenType.ID_TOKEN);
-            d = new FunDeclaration("void", (String) id.getData(), null);
+            d = new FunctionDeclaration(TypeSpecifier.VOID_TYPE, (String) id.getData(), null);
             
         } else if(currentToken.getType() == TokenType.INT_TOKEN){
             matchToken(TokenType.INT_TOKEN);
@@ -93,16 +95,16 @@ public class CMinusParser implements Parser {
         
         if(currentToken.getType() == TokenType.SEMI_TOKEN){
             matchToken(TokenType.SEMI_TOKEN);
-            d = new VarDeclaration(id, null);
+            d = new VariableDeclaration(id, null);
             
         } else if(currentToken.getType() == TokenType.LSQ_TOKEN) {
             Token num = matchToken(TokenType.NUM_TOKEN);
             matchToken(TokenType.RSQ_TOKEN);
             matchToken(TokenType.SEMI_TOKEN);
-            d = new VarDeclaration(id, (Integer) num.getData());
+            d = new VariableDeclaration(id, (Integer) num.getData());
             
         } else if(currentToken.getType() == TokenType.LPAR_TOKEN) {
-            d = new FunDeclaration("int", id, null);
+            d = new FunctionDeclaration(TypeSpecifier.INT_TYPE, id, null);
             
         } else {
             throw new ParserException("Error parsing decl' : invalid token " + currentToken.getType());

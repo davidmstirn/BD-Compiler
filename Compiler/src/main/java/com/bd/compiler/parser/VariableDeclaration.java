@@ -8,10 +8,10 @@ package com.bd.compiler.parser;
  *
  * @author dajms
  */
-public class VarDeclaration extends Declaration {
+public class VariableDeclaration extends Declaration {
     private final Integer arrayLength;
     
-    public VarDeclaration(String id, Integer arrayLength){
+    public VariableDeclaration(String id, Integer arrayLength){
         super(id);
         this.arrayLength = arrayLength;
     }
