@@ -11,6 +11,5 @@ package com.bd.compiler.parser;
  * Copyright of the authors
  */
 public interface Parser {
-    public AST parse();
-    public void printTree();
+    public Program parse();
 }
