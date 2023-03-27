@@ -1,0 +1,7 @@
+Program {
+    VAR-DECL: a
+    VAR-DECL: b
+    VAR-DECL: c
+    FUN-DECL: d
+    FUN-DECL: gcd
+}

@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -138,13 +139,13 @@ public class CMinusParser implements Parser {
         CMinusParser cmp = new CMinusParser(filename);
         Program p = cmp.parse();
         
-//        String outputFilename = filename.substring(0, filename.indexOf('.'));
-//        try (PrintStream o = new PrintStream(new File(outputFilename+".ast"))){
-//            System.setOut(o);
-//        } catch (FileNotFoundException e){
-//            System.out.println("Error opening output file");
-//        }
-        
-        p.printTree();
+        String outputFilename = filename.substring(0, filename.indexOf('.'));
+        try(FileWriter fw = new FileWriter(outputFilename+".ast")){
+            String output = p.printTree();
+            System.out.println(output);
+            fw.append(output);
+        }catch(IOException e){
+            System.out.println("Error opening file");
+        }
     }
 }

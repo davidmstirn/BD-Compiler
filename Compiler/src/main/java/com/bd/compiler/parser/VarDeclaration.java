@@ -19,8 +19,8 @@ public class VarDeclaration extends Declaration {
     public Integer getArrayLength() { return arrayLength; }
     
     @Override
-    public void printTree(String indent) {
+    public String printTree(String indent) {
         String len = arrayLength != null ? "["+String.valueOf(arrayLength)+"]" : "";
-        System.out.println(indent + "VAR-DECL: " + this.getID() + len);
+        return indent + "VAR-DECL: " + this.getID() + len;
     }
 }

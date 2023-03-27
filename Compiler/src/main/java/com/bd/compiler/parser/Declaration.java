@@ -17,5 +17,5 @@ public abstract class Declaration {
     
     public String getID() { return id; }
     
-    public abstract void printTree(String indent);
+    public abstract String printTree(String indent);
 }

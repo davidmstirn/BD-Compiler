@@ -19,11 +19,12 @@ public class Program {
         declarationList = declList;
     }
     
-    public void printTree() {
-        System.out.println("Program {");
+    public String printTree() {
+        String output = "Program {\n";
         for(Declaration decl : declarationList){
-            decl.printTree("    ");
+            output+=decl.printTree("    ")+"\n";
         }
-        System.out.println("}");
+        output+="}\n";
+        return output;
     }
 }

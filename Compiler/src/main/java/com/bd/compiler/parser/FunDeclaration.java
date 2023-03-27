@@ -17,7 +17,7 @@ public class FunDeclaration extends Declaration {
     }
     
     @Override
-    public void printTree(String indent) {
-        System.out.println(indent + "FUN-DECL: " + this.getID());
+    public String printTree(String indent) {
+        return indent + "FUN-DECL: " + this.getID();
     }
 }
