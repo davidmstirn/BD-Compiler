@@ -74,7 +74,7 @@ public class CMinusParser implements Parser {
         if (currentToken.getType() == TokenType.VOID_TOKEN){
             matchToken(TokenType.VOID_TOKEN);
             Token id = matchToken(TokenType.ID_TOKEN);
-            d = new FunDeclaration((String) id.getData());
+            d = new FunDeclaration("void", (String) id.getData(), null);
             
         } else if(currentToken.getType() == TokenType.INT_TOKEN){
             matchToken(TokenType.INT_TOKEN);
@@ -102,7 +102,7 @@ public class CMinusParser implements Parser {
             d = new VarDeclaration(id, (Integer) num.getData());
             
         } else if(currentToken.getType() == TokenType.LPAR_TOKEN) {
-            d = new FunDeclaration(id);
+            d = new FunDeclaration("int", id, null);
             
         } else {
             throw new ParserException("Error parsing decl' : invalid token " + currentToken.getType());
@@ -141,7 +141,7 @@ public class CMinusParser implements Parser {
         
         String outputFilename = filename.substring(0, filename.indexOf('.'));
         try(FileWriter fw = new FileWriter(outputFilename+".ast")){
-            String output = p.printTree();
+            String output = p.printTree()+"\n";
             System.out.println(output);
             fw.append(output);
         }catch(IOException e){

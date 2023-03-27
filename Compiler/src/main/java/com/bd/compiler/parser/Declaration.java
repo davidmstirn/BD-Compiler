@@ -9,7 +9,7 @@ package com.bd.compiler.parser;
  * @author dajms
  */
 public abstract class Declaration {
-    private String id;
+    private final String id;
     
     public Declaration(String id) {
         this.id = id;
