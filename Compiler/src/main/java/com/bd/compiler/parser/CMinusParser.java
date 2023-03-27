@@ -89,7 +89,7 @@ public class CMinusParser implements Parser {
         if (currentToken.getType() == TokenType.VOID_TOKEN){
             matchToken(TokenType.VOID_TOKEN);
             Token id = matchToken(TokenType.ID_TOKEN);
-            d = new FunctionDeclaration(TypeSpecifier.VOID_TYPE, (String) id.getData(), null);
+            d = new FunctionDeclaration(TypeSpecifier.VOID_TYPE, (String) id.getData(), null, null);
             
         } else if(currentToken.getType() == TokenType.INT_TOKEN){
             matchToken(TokenType.INT_TOKEN);
@@ -117,7 +117,7 @@ public class CMinusParser implements Parser {
             d = new VariableDeclaration(id, (Integer) num.getData());
             
         } else if(currentToken.getType() == TokenType.LPAR_TOKEN) {
-            d = new FunctionDeclaration(TypeSpecifier.INT_TYPE, id, null);
+            d = new FunctionDeclaration(TypeSpecifier.INT_TYPE, id, null, null);
             
         } else {
             throw new ParserException("Error parsing decl' : invalid token " + currentToken.getType());

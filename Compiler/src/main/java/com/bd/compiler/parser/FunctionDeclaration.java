@@ -5,6 +5,7 @@
 package com.bd.compiler.parser;
 
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
+import java.util.List;
 
 /**
  *
@@ -12,22 +13,35 @@ import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
  */
 public class FunctionDeclaration extends Declaration {
     private final TypeSpecifier type;
+    private final List<Parameter> parameters;
     private final CompoundStatement body;
     
-    public FunctionDeclaration(TypeSpecifier type, String id, CompoundStatement b) {
-        super(id);
+    public FunctionDeclaration(TypeSpecifier type, String identifier, List<Parameter> parameters, CompoundStatement body) {
+        super(identifier);
         this.type = type;
-        body = b;
+        this.parameters = parameters;
+        this.body = body;
     }
     
     public TypeSpecifier getType() { return type; }
+    public List<Parameter> getParameters() { return parameters; }
     public CompoundStatement getBody() { return body; }
     
     @Override
     public String printTree(String indent) {
         String output = indent + "FUN-DECL: " + type.name() + " " + this.getID() + " {\n";
-        output+= body != null ? body.printTree(indent+"    ") : "";
+        output+=indent+"    PARAMS {\n";
+        for(Parameter p : parameters) {
+            output+=p.printTree(indent+"        ")+"\n";
+        }
+        output+=indent+"    }\n";
+        
+        output+=indent+"    BODY {\n";
+        output+= body.printTree(indent+"    ")+"\n";
+        output+=indent+"    }\n";
+        
         output+= indent+"}";
+        
         return output;
     }
 }
