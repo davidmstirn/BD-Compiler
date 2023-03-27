@@ -16,7 +16,7 @@ first(selection-stmt) = {if}
 first(iteration-stmt) = {while}
 first(return-stmt) = {return}
 first(expression) = {id, num, (}
-first(expression') = {=, [, (}
+first(expression') = {=, [, (, ε, *, /}
 first(expression'') = {=, ε, *, /}
 first(simple-expression) = {ε, *, /}
 first(relop) = {<=, <, >, >=, ==, !=}
