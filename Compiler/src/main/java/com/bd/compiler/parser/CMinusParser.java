@@ -32,6 +32,19 @@ public class CMinusParser implements Parser {
         VOID_TYPE,
         INT_TYPE
     }
+    
+    public enum BinaryOperation {
+        LT_EQ_BINOP,
+        LT_BINOP,
+        GT_BIN_OP,
+        GT_EQ_BINOP,
+        EQ_BINOP,
+        NE_BINOP,
+        PLUS_BINOP,
+        MINUS_BINOP,
+        MUL_BINOP,
+        DIV_BINOP
+    }
 
     public CMinusParser(String filename){
         file = filename;
