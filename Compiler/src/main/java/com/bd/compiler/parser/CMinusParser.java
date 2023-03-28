@@ -65,14 +65,16 @@ public class CMinusParser implements Parser {
     
     @Override
     public Program parse() {
-        try{
-            parseProgram();
-            br.close();
-            fr.close();
-        } catch (ParserException e){
-            System.out.println(e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Error closing input file");
+        if(program == null){
+            try{
+                parseProgram();
+                br.close();
+                fr.close();
+            } catch (ParserException e){
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Error closing input file");
+            }
         }
         
         return program;
