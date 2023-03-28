@@ -16,12 +16,12 @@ first(selection-stmt) = {if}
 first(iteration-stmt) = {while}
 first(return-stmt) = {return}
 first(expression) = {id, num, (}
-first(expression') = {=, [, (, ε, *, /}
-first(expression'') = {=, ε, *, /}
-first(simple-expression) = {ε, *, /}
+first(expression') = {=, [, (, ε, *, /, <=, <, >, >=, ==, !=, +, -}
+first(expression'') = {=, ε, *, /, <=, <, >, >=, ==, !=, +, -}
+first(simple-expression) = {ε, *, /, <=, <, >, >=, ==, !=, +, -}
 first(relop) = {<=, <, >, >=, ==, !=}
 first(additive-expression) = {(, id, num}
-first(additive-expression') = {ε, *, /}
+first(additive-expression') = {ε, *, /, +, -}
 first(addop) = {+, -}
 first(term) = {(, id, num}
 first(term') = {ε, *, /}
@@ -63,5 +63,3 @@ follow(factor) = {*, /, +, -, <=, <, >, >=, ==, !=, ;, ), ], ','}
 follow(varcall) = {*, /, +, -, <=, <, >, >=, ==, !=, ;, ), ], ','}
 follow(args) = {)}
 follow(arg-list) = {)}
-
-The grammar has been checked and is LL(1)
