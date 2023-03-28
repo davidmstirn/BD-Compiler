@@ -208,7 +208,7 @@ public class CMinusParser implements Parser {
             case NUM_TOKEN:
             case LPAR_TOKEN:
             case RCURL_TOKEN:
-                return null;
+                return decls;
             case INT_TOKEN:
                 decls.add(parseLocalDeclaration());
                 break;
@@ -246,9 +246,101 @@ public class CMinusParser implements Parser {
         return decl;
     }
     
+    private List<Statement> parseStatementList() throws ParserException {
+        List<Statement> stmtList = new ArrayList<Statement>();
+        TokenType tt = currentToken.getType();
+        
+        while ( tt == TokenType.LCURL_TOKEN ||
+                tt == TokenType.SEMI_TOKEN ||
+                tt == TokenType.IF_TOKEN ||
+                tt == TokenType.WHILE_TOKEN ||
+                tt == TokenType.RETURN_TOKEN ||
+                tt == TokenType.ID_TOKEN ||
+                tt == TokenType.NUM_TOKEN ||
+                tt == TokenType.LPAR_TOKEN )
+        {
+            stmtList.add(parseStatement());
+            tt = currentToken.getType();
+        }
+
+        // follow set
+        if (currentToken.getType() == TokenType.RCURL_TOKEN) {
+            return stmtList;
+        } else {
+            throw new ParserException("Error parsing stmt-list : invalid token " + currentToken.getType());
+        }
+    }
+
+    private Statement parseStatement() throws ParserException {
+        if (currentToken.getType() == TokenType.LCURL_TOKEN) {
+            return parseCompoundStatement();
+        } else if (currentToken.getType() == TokenType.IF_TOKEN) {
+            return parseSelectionStatement();
+        } else if (currentToken.getType() == TokenType.WHILE_TOKEN) {
+            return parseIterationStatement();
+        } else if (currentToken.getType() == TokenType.RETURN_TOKEN) {
+            return parseReturnStatement();
+        } else if ( currentToken.getType() == TokenType.SEMI_TOKEN ||
+                    currentToken.getType() == TokenType.ID_TOKEN ||
+                    currentToken.getType() == TokenType.NUM_TOKEN ||
+                    currentToken.getType() == TokenType.LPAR_TOKEN )
+        {
+            return parseExpressionStatement();
+        } else {
+            throw new ParserException("Error parsing stmt : invalid token " + currentToken.getType());
+        }
+    }
     
+    private ExpressionStatement parseExpressionStatement() throws ParserException {
+        ExpressionStatement exprStmt = new ExpressionStatement(null);
+        if (currentToken.getType() == TokenType.ID_TOKEN ||
+            currentToken.getType() == TokenType.NUM_TOKEN ||
+            currentToken.getType() == TokenType.LPAR_TOKEN )
+        {
+            exprStmt = new ExpressionStatement(parseExpression());
+        }
+        matchToken(TokenType.SEMI_TOKEN);
+        return exprStmt;
+    }
     
+    private SelectionStatement parseSelectionStatement() throws ParserException {
+        matchToken(TokenType.IF_TOKEN);
+        matchToken(TokenType.LPAR_TOKEN);
+        Expression expr = parseExpression();
+        matchToken(TokenType.RPAR_TOKEN);
+        Statement stmt = parseStatement();
+        
+        Statement elseStmt = null;
+        if (currentToken.getType() == TokenType.ELSE_TOKEN) {
+            matchToken(TokenType.ELSE_TOKEN);
+            elseStmt = parseStatement();
+        }
+        return new SelectionStatement(expr, stmt, elseStmt);
+    }
     
+    private IterationStatement parseIterationStatement() throws ParserException {
+        matchToken(TokenType.WHILE_TOKEN);
+        matchToken(TokenType.LPAR_TOKEN);
+        Expression expr = parseExpression();
+        matchToken(TokenType.RPAR_TOKEN);
+        Statement stmt = parseStatement();
+        return new IterationStatement(expr, stmt);
+    }
+    
+    private ReturnStatement parseReturnStatement() throws ParserException {
+        ReturnStatement retStmt = new ReturnStatement(null);
+
+        matchToken(TokenType.RETURN_TOKEN);
+        if (currentToken.getType() == TokenType.ID_TOKEN ||
+            currentToken.getType() == TokenType.NUM_TOKEN ||
+            currentToken.getType() == TokenType.LPAR_TOKEN )
+        {
+            retStmt = new ReturnStatement(parseExpression());
+        }
+        matchToken(TokenType.SEMI_TOKEN);
+        return retStmt;
+    }
+                
     private Expression parseExpression() throws ParserException {
         Expression e;
         
@@ -523,7 +615,6 @@ public class CMinusParser implements Parser {
                 throw new ParserException("Error scanning: last token: " + prev.getType());
             }
         } else {
-            currentToken = null;
             throw new ParserException("Error matching: " + t + " and " + prev.getType());
         }
         
