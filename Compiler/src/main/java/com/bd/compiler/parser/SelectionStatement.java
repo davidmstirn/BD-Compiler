@@ -37,9 +37,11 @@ public class SelectionStatement extends Statement {
         output+=ifPart.printTree(indent+"        ")+"\n";
         output+=indent+"    }\n";
         
-        output+=indent+"    ELSE-PART {\n";
-        output+=elsePart.printTree(indent+"        ")+"\n";
-        output+=indent+"    }\n";
+        if (elsePart != null) {
+            output+=indent+"    ELSE-PART {\n";
+            output+=elsePart.printTree(indent+"        ")+"\n";
+            output+=indent+"    }\n";
+        }
         
         output+=indent+"}";
         return output;

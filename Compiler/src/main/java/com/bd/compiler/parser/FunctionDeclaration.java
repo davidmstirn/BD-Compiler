@@ -30,15 +30,20 @@ public class FunctionDeclaration extends Declaration {
     @Override
     public String printTree(String indent) {
         String output = indent + "FUN-DECL: " + type.name() + " " + this.getID() + " {\n";
-        output+=indent+"    PARAMS {\n";
-        for(Parameter p : parameters) {
-            output+=p.printTree(indent+"        ")+"\n";
-        }
-        output+=indent+"    }\n";
         
-        output+=indent+"    BODY {\n";
-        output+= body.printTree(indent+"    ")+"\n";
-        output+=indent+"    }\n";
+        if (parameters != null) {
+            output+=indent+"    PARAMS {\n";
+            for(Parameter p : parameters) {
+                output+=p.printTree(indent+"        ")+"\n";
+            }
+            output+=indent+"    }\n";
+        }
+        
+        if (body != null) {
+            output+=indent+"    BODY {\n";
+            output+= body.printTree(indent+"        ")+"\n";
+            output+=indent+"    }\n";
+        }
         
         output+= indent+"}";
         

@@ -29,11 +29,11 @@ public class CallExpression extends Expression {
         output+=indent+"    ARGS {\n";
         
         for(Expression e : arguments) {
-            output+=e.printTree(indent+"    ")+"\n";
+            output+=e.printTree(indent+"        ")+"\n";
         }
         
-        output+="    }\n";
-        output+=")\n";
+        output+=indent+"    }\n";
+        output+=indent+")\n";
         
         return output;
     }

@@ -20,7 +20,9 @@ public class ExpressionStatement extends Statement {
     @Override
     public String printTree(String indent) {
         String output = indent+"EXP-STMT {\n";
-        output+= exp.printTree(indent+"    ")+"\n";
+        if (exp != null) {
+            output+= exp.printTree(indent+"    ")+"\n";
+        }
         output+= indent+"}";
         return output;
     }

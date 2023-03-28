@@ -22,8 +22,10 @@ public class ReturnStatement extends Statement {
         String output = indent+"RET-STMT {\n";
         
         output+=indent+"    RETURN {\n";
-        output+=statement.printTree(indent+"        ")+"\n";
+        if (statement != null) {
+            output+=statement.printTree(indent+"        ")+"\n";
         output+=indent+"    }\n";
+        }
         
         output+=indent+"}";
         return output;

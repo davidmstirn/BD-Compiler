@@ -89,7 +89,7 @@ public class CMinusParser implements Parser {
         if (currentToken.getType() == TokenType.VOID_TOKEN){
             matchToken(TokenType.VOID_TOKEN);
             Token id = matchToken(TokenType.ID_TOKEN);
-            d = new FunctionDeclaration(TypeSpecifier.VOID_TYPE, (String) id.getData(), null, null);
+            d = parseFunDeclaration(TypeSpecifier.VOID_TYPE, (String) id.getData());
             
         } else if(currentToken.getType() == TokenType.INT_TOKEN){
             matchToken(TokenType.INT_TOKEN);
@@ -140,7 +140,7 @@ public class CMinusParser implements Parser {
         List<Parameter> params = new ArrayList<Parameter>();
         
         if (currentToken.getType() == TokenType.VOID_TOKEN) {
-            params.add(new Parameter(TypeSpecifier.VOID_TYPE, null, false));
+            params.add(new Parameter(TypeSpecifier.VOID_TYPE, "", false));
             matchToken(TokenType.VOID_TOKEN);
         } else if (currentToken.getType() == TokenType.INT_TOKEN) {
             params = parseParamList();
@@ -366,8 +366,8 @@ public class CMinusParser implements Parser {
     private Expression parseExpressionPrime(String id) throws ParserException {
         Expression e;
         
-        if(currentToken.getType() == TokenType.EQ_TOKEN) {
-            matchToken(TokenType.EQ_TOKEN);
+        if(currentToken.getType() == TokenType.ASSIGN_TOKEN) {
+            matchToken(TokenType.ASSIGN_TOKEN);
             VariableExpression ve = new VariableExpression(id, null);
             e = parseExpression();
             e = new AssignExpression(ve, e);
@@ -402,7 +402,7 @@ public class CMinusParser implements Parser {
     private Expression parseExpressionPrimePrime(VariableExpression ve) throws ParserException {
         Expression e;
         
-        if(currentToken.getType() == TokenType.EQ_TOKEN) {
+        if(currentToken.getType() == TokenType.ASSIGN_TOKEN) {
             matchToken(TokenType.ASSIGN_TOKEN);
             Expression rhs = parseExpression();
             e = new AssignExpression(ve, rhs);

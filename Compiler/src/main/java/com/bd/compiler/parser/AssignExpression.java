@@ -24,15 +24,15 @@ public class AssignExpression extends Expression {
     public String printTree(String indent) {
         String output = indent+"ASSIGN-EXP {\n";
         
-        output+=indent+"    LHS {";
-        output+=variableExpression.printTree(indent+"    ")+"\n";
-        output+=indent+"    }";
+        output+=indent+"    LHS {"+"\n";
+        output+=variableExpression.printTree(indent+"        ")+"\n";
+        output+=indent+"    }"+"\n";
         
-        output+=indent+"    RHS {";
-        output+=rhs.printTree(indent+"    ")+"\n";
-        output+=indent+"    }";
+        output+=indent+"    RHS {"+"\n";
+        output+=rhs.printTree(indent+"        ")+"\n";
+        output+=indent+"    }"+"\n";
         
-        output+="}\n";
+        output+=indent+"}\n";
         
         return output;
     }

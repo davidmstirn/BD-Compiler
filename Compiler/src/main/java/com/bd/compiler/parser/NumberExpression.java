@@ -19,7 +19,7 @@ public class NumberExpression extends Expression {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"NUM-EXP: " + value +"\n";
+        String output = indent+"NUM-EXP: " + value ;
         
         return output;
     }

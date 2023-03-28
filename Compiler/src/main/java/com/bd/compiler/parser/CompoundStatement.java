@@ -29,7 +29,6 @@ public class CompoundStatement extends Statement {
         for(Declaration d : localDeclarationList) {
             output+=d.printTree(indent+"    ")+"\n";
         }
-        output+="\n";
         for(Statement s : statementList) {
             output+=s.printTree(indent+"    ")+"\n";
         }
