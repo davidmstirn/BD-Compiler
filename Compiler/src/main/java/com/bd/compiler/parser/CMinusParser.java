@@ -117,7 +117,7 @@ public class CMinusParser implements Parser {
             d = new VariableDeclaration(id, (Integer) num.getData());
             
         } else if(currentToken.getType() == TokenType.LPAR_TOKEN) {
-            d = new FunctionDeclaration(TypeSpecifier.INT_TYPE, id, null, null);
+            d = parseFunDeclaration(TypeSpecifier.INT_TYPE, id);
             
         } else {
             throw new ParserException("Error parsing decl' : invalid token " + currentToken.getType());
@@ -125,6 +125,129 @@ public class CMinusParser implements Parser {
         
         return d;
     }
+    
+        private FunctionDeclaration parseFunDeclaration(TypeSpecifier type, String id) throws ParserException {
+        
+        matchToken(TokenType.LPAR_TOKEN);
+        List<Parameter> params = parseParams();
+        matchToken(TokenType.RPAR_TOKEN);
+        CompoundStatement body = parseCompoundStatement();
+
+        return new FunctionDeclaration(type, id, params, body);
+    }
+    
+    private List<Parameter> parseParams() throws ParserException {
+        List<Parameter> params = new ArrayList<Parameter>();
+        
+        if (currentToken.getType() == TokenType.VOID_TOKEN) {
+            params.add(new Parameter(TypeSpecifier.VOID_TYPE, null, false));
+            matchToken(TokenType.VOID_TOKEN);
+        } else if (currentToken.getType() == TokenType.INT_TOKEN) {
+            params = parseParamList();
+        } else {
+            throw new ParserException("Error parsing params : invalid token " + currentToken.getType());
+        }
+        return params;
+    }
+    
+    private List<Parameter> parseParamList() throws ParserException {
+        List<Parameter> params = new ArrayList<Parameter>();
+        
+        if (currentToken.getType() == TokenType.INT_TOKEN) {
+            params.add(parseParam());
+        } else {
+            throw new ParserException("Error parsing param-list : invalid token " + currentToken.getType());
+        }
+        
+        while(currentToken.getType() == TokenType.COMMA_TOKEN) {
+            matchToken(TokenType.COMMA_TOKEN);
+            if (currentToken.getType() == TokenType.INT_TOKEN) {
+                params.add(parseParam());
+            } else {
+                throw new ParserException("Error parsing param-list : invalid token " + currentToken.getType());
+            }
+        }
+        
+        return params;
+    }
+    
+    private Parameter parseParam() throws ParserException {
+        matchToken(TokenType.INT_TOKEN);
+        // Cast this later so that if the token is incorrect, the parser error is thrown first
+        Object id = currentToken.getData();
+        matchToken(TokenType.ID_TOKEN);
+
+        if (currentToken.getType() == TokenType.LSQ_TOKEN) {
+            matchToken(TokenType.LSQ_TOKEN);
+            matchToken(TokenType.RSQ_TOKEN);
+            return new Parameter(TypeSpecifier.INT_TYPE, (String) id, true);
+        } else {
+            return new Parameter(TypeSpecifier.INT_TYPE, (String) id, false);
+        }
+    }
+       
+    private CompoundStatement parseCompoundStatement() throws ParserException {
+        matchToken(TokenType.LCURL_TOKEN);
+        List<Declaration> locals = parseLocalDeclarations();
+        List<Statement> stmts = parseStatementList();
+        matchToken(TokenType.RCURL_TOKEN);
+        return new CompoundStatement(locals, stmts);
+    }
+    
+    private List<Declaration> parseLocalDeclarations() throws ParserException {
+        List<Declaration> decls = new ArrayList<Declaration>();
+        
+        switch (currentToken.getType()) {
+            // Follow set. Go away quietly
+            case LCURL_TOKEN:
+            case SEMI_TOKEN:
+            case IF_TOKEN:
+            case WHILE_TOKEN:
+            case RETURN_TOKEN:
+            case ID_TOKEN:
+            case NUM_TOKEN:
+            case LPAR_TOKEN:
+            case RCURL_TOKEN:
+                return null;
+            case INT_TOKEN:
+                decls.add(parseLocalDeclaration());
+                break;
+            default:
+                throw new ParserException("Error parsing local-decls : invalid token " + currentToken.getType());
+        }
+        
+        while (currentToken.getType() == TokenType.INT_TOKEN) {
+            decls.add(parseLocalDeclaration());
+        }
+        return decls;
+    }
+    
+    private Declaration parseLocalDeclaration() throws ParserException {
+        VariableDeclaration decl;
+        
+        matchToken(TokenType.INT_TOKEN);
+        // Cast this later so that if the token is incorrect, the parser error is thrown first
+        Object id = currentToken.getData();
+        matchToken(TokenType.ID_TOKEN);
+        
+        if (currentToken.getType() == TokenType.LSQ_TOKEN) {
+            matchToken(TokenType.LSQ_TOKEN);
+            // Cast this later so that if the token is incorrect, the parser error is thrown first
+            Object len = currentToken.getData();
+            matchToken(TokenType.NUM_TOKEN);
+            matchToken(TokenType.RSQ_TOKEN);
+            decl = new VariableDeclaration((String) id, (Integer) len);
+        } else {
+            decl = new VariableDeclaration((String) id, null);
+        }
+        
+        matchToken(TokenType.SEMI_TOKEN);
+        
+        return decl;
+    }
+    
+    
+    
     
     private Expression parseExpression() throws ParserException {
         Expression e;
@@ -400,6 +523,7 @@ public class CMinusParser implements Parser {
                 throw new ParserException("Error scanning: last token: " + prev.getType());
             }
         } else {
+            currentToken = null;
             throw new ParserException("Error matching: " + t + " and " + prev.getType());
         }
         
