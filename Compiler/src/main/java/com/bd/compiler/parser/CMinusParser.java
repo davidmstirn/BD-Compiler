@@ -63,10 +63,6 @@ public class CMinusParser implements Parser {
         }
     }
     
-    public void cleanup() {
-        
-    }
-    
     @Override
     public Program parse() {
         try{
