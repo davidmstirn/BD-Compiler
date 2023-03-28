@@ -9,22 +9,29 @@ package com.bd.compiler.parser;
  * @author dajms
  */
 public class AssignExpression extends Expression {
-    private final String identifier;
+    private final VariableExpression variableExpression;
     private final Expression rhs;
     
-    public AssignExpression(String id, Expression rhs){
-        this.identifier = id;
+    public AssignExpression(VariableExpression ve, Expression rhs) {
+        this.variableExpression = ve;
         this.rhs = rhs;
     }
     
-    public String getIdentifier() { return identifier; }
+    public VariableExpression getVariableExpression() { return variableExpression; }
     public Expression getRhs() { return rhs; }
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"ASSIGN-EXP: " + identifier + " {\n";
+        String output = indent+"ASSIGN-EXP {\n";
         
+        output+=indent+"    LHS {";
+        output+=variableExpression.printTree(indent+"    ")+"\n";
+        output+=indent+"    }";
+        
+        output+=indent+"    RHS {";
         output+=rhs.printTree(indent+"    ")+"\n";
+        output+=indent+"    }";
+        
         output+="}\n";
         
         return output;
