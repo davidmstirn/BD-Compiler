@@ -32,7 +32,7 @@ public class AssignExpression extends Expression {
         output+=rhs.printTree(indent+"        ")+"\n";
         output+=indent+"    }"+"\n";
         
-        output+=indent+"}\n";
+        output+=indent+"}";
         
         return output;
     }

@@ -27,6 +27,8 @@ public class CMinusParser implements Parser {
     private String file;
     private Token currentToken;
     private Scanner scanner;
+    private FileReader fr;
+    private BufferedReader br;
     
     public enum TypeSpecifier {
         VOID_TYPE,
@@ -49,8 +51,9 @@ public class CMinusParser implements Parser {
     public CMinusParser(String filename){
         file = filename;
         
-        try (FileReader fr = new FileReader(file)){
-            BufferedReader br = new BufferedReader(fr);
+        try {
+            fr = new FileReader(file);
+            br = new BufferedReader(fr);
             scanner = new CMinusScanner(br);
             currentToken = scanner.getNextToken();
         } catch (IOException e) {
@@ -60,14 +63,23 @@ public class CMinusParser implements Parser {
         }
     }
     
+    public void cleanup() {
+        
+    }
+    
     @Override
     public Program parse() {
         try{
-            return parseProgram();
+            parseProgram();
+            br.close();
+            fr.close();
         } catch (ParserException e){
             System.out.println(e.getMessage());
-            return null;
+        } catch (IOException e) {
+            System.out.println("Error closing input file");
         }
+        
+        return program;
     }
     
     private Program parseProgram() throws ParserException {
