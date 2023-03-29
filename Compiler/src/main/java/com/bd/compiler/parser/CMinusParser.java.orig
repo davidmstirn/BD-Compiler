@@ -50,28 +50,30 @@ public class CMinusParser implements Parser {
 
     public CMinusParser(String filename){
         file = filename;
-    }
-    
-    @Override
-    public Program parse() throws ParserException{
+        
         try {
             fr = new FileReader(file);
             br = new BufferedReader(fr);
             scanner = new CMinusScanner(br);
             currentToken = scanner.getNextToken();
         } catch (IOException e) {
-            throw new ParserException("Error opening input file");
+            System.out.println("Error opening input file");
         } catch (ScannerException e) {
-            throw new ParserException("Scan error");
+            System.out.println("Scan error");
         }
-        
+    }
+    
+    @Override
+    public Program parse() {
         if(program == null){
             try{
                 parseProgram();
                 br.close();
                 fr.close();
+            } catch (ParserException e){
+                System.out.println(e.getMessage());
             } catch (IOException e) {
-                throw new ParserException("Error closing input file");
+                System.out.println("Error closing input file");
             }
         }
         
@@ -80,9 +82,8 @@ public class CMinusParser implements Parser {
     
     // Parses a top-level program
     private Program parseProgram() throws ParserException {
-        // program -> declaration-list -> declaration {declaration}
         List<Declaration> declList = new ArrayList<>();
-        // First and Subsequent decls
+        // program -> declaration-list -> declaration {declaration}
         while(currentToken.getType() == TokenType.VOID_TOKEN ||
                 currentToken.getType() == TokenType.INT_TOKEN){
             Declaration d = parseDeclaration();
@@ -125,8 +126,11 @@ public class CMinusParser implements Parser {
             d = new VariableDeclaration(id, null);
             
         } else if(currentToken.getType() == TokenType.LSQ_TOKEN) {
-        // declaration' -> [ NUM ] ;
+<<<<<<< Updated upstream
             matchToken(TokenType.LSQ_TOKEN);
+=======
+        // declaration' -> [ NUM ] ;
+>>>>>>> Stashed changes
             Token num = matchToken(TokenType.NUM_TOKEN);
             matchToken(TokenType.RSQ_TOKEN);
             matchToken(TokenType.SEMI_TOKEN);
@@ -144,6 +148,7 @@ public class CMinusParser implements Parser {
     }
     
     private FunctionDeclaration parseFunDeclaration(TypeSpecifier type, String id) throws ParserException {
+        
         // fun-declaration -> ( params ) compound-stmt
         matchToken(TokenType.LPAR_TOKEN);
         List<Parameter> params = parseParams();
@@ -170,8 +175,9 @@ public class CMinusParser implements Parser {
     }
     
     private List<Parameter> parseParamList() throws ParserException {
-        // param-list -> param {, param}
         List<Parameter> params = new ArrayList<Parameter>();
+                
+        // param-list -> param {, param}
         
         // First param
         if (currentToken.getType() == TokenType.INT_TOKEN) {
@@ -680,8 +686,6 @@ public class CMinusParser implements Parser {
             } catch(ScannerException e) {
                 throw new ParserException("Error scanning: last token: " + prev.getType());
             }
-        } else if(prev.getType() == TokenType.ERROR_TOKEN) { 
-            throw new ParserException("Error: ERROR_TOKEN received, but " + t + " expected");
         } else {
             throw new ParserException("Error matching: " + t + " and " + prev.getType());
         }
@@ -718,25 +722,16 @@ public class CMinusParser implements Parser {
         
         // Parse
         CMinusParser cmp = new CMinusParser(filename);
-        Program p = null;
-        try {
-            p = cmp.parse();
-        } catch (ParserException e) {
-            System.out.println(e.getMessage());
-        }
+        Program p = cmp.parse();
         
         // Print output
-        if(p != null){
-            String outputFilename = filename.substring(0, filename.indexOf('.'));
-            try(FileWriter fw = new FileWriter(outputFilename+".ast")){
-                String output = p.printTree()+"\n";
-                System.out.println(output);
-                fw.append(output);
-            }catch(IOException e){
-                System.out.println("Error opening file");
-            }
-        } else {
-            System.out.println("Error parsing " + filename);
+        String outputFilename = filename.substring(0, filename.indexOf('.'));
+        try(FileWriter fw = new FileWriter(outputFilename+".ast")){
+            String output = p.printTree()+"\n";
+            System.out.println(output);
+            fw.append(output);
+        }catch(IOException e){
+            System.out.println("Error opening file");
         }
     }
 }

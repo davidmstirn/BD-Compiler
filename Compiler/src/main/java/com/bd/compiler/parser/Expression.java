@@ -3,7 +3,7 @@ package com.bd.compiler.parser;
 /**
  * Expression
  * File: Expression.java
- * TODO: describe this file!
+ * A C- abstract Expression to be inherited by grammar nodes
  *
  * @author Brandon Barker
  * @author David Stirn

@@ -1,12 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bd.compiler.parser;
 
 /**
+ * VariableDeclaration
+ * File: VariableDeclaration.java
+ * A C- Variable Declaration grammar node
  *
- * @author dajms
+ * @author Brandon Barker
+ * @author David Stirn
+ * @version 1.0 Mar 11, 2023
+ * Copyright of the authors
  */
 public class VariableDeclaration extends Declaration {
     private final Integer arrayLength;
