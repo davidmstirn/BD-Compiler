@@ -82,8 +82,9 @@ public class CMinusParser implements Parser {
     
     // Parses a top-level program
     private Program parseProgram() throws ParserException {
-        List<Declaration> declList = new ArrayList<>();
         // program -> declaration-list -> declaration {declaration}
+        List<Declaration> declList = new ArrayList<>();
+        // First and Subsequent decls
         while(currentToken.getType() == TokenType.VOID_TOKEN ||
                 currentToken.getType() == TokenType.INT_TOKEN){
             Declaration d = parseDeclaration();
@@ -145,7 +146,6 @@ public class CMinusParser implements Parser {
     }
     
     private FunctionDeclaration parseFunDeclaration(TypeSpecifier type, String id) throws ParserException {
-        
         // fun-declaration -> ( params ) compound-stmt
         matchToken(TokenType.LPAR_TOKEN);
         List<Parameter> params = parseParams();
@@ -172,9 +172,8 @@ public class CMinusParser implements Parser {
     }
     
     private List<Parameter> parseParamList() throws ParserException {
-        List<Parameter> params = new ArrayList<Parameter>();
-                
         // param-list -> param {, param}
+        List<Parameter> params = new ArrayList<Parameter>();
         
         // First param
         if (currentToken.getType() == TokenType.INT_TOKEN) {
