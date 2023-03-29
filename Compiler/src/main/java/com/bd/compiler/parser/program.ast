@@ -1,9 +1,0 @@
-Program {
-    VAR-DECL: a
-    VAR-DECL: b
-    VAR-DECL: c
-    FUN-DECL: void d {
-    }
-    FUN-DECL: int gcd {
-    }
-}

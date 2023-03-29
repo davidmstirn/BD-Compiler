@@ -28,8 +28,8 @@ public class VariableExpression extends Expression {
             output+="[\n";
             output+=indent+"    EXP {\n";
             output+=arraySubscript.printTree(indent+"    ")+"\n";
-            output+="    }\n";
-            output+="]\n";
+            output+=indent+"    }\n";
+            output+=indent+"]";
         }
         
         return output;

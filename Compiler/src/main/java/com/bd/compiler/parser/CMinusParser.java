@@ -121,6 +121,7 @@ public class CMinusParser implements Parser {
             d = new VariableDeclaration(id, null);
             
         } else if(currentToken.getType() == TokenType.LSQ_TOKEN) {
+            matchToken(TokenType.LSQ_TOKEN);
             Token num = matchToken(TokenType.NUM_TOKEN);
             matchToken(TokenType.RSQ_TOKEN);
             matchToken(TokenType.SEMI_TOKEN);
