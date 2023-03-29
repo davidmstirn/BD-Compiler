@@ -3,7 +3,7 @@ package com.bd.compiler.parser;
 /**
  * Statement
  * File: Statement.java
- * TODO: describe this file!
+ * A C- abstract Statement to be inherited by grammar nodes
  *
  * @author Brandon Barker
  * @author David Stirn

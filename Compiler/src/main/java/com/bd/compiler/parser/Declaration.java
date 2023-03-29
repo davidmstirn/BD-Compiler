@@ -1,12 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.bd.compiler.parser;
 
 /**
+ * Declaration
+ * File: Declaration.java
+ * A C- abstract Declaration to be inherited by grammar nodes
  *
- * @author dajms
+ * @author Brandon Barker
+ * @author David Stirn
+ * @version 1.0 Mar 11, 2023
+ * Copyright of the authors
  */
 public abstract class Declaration {
     private final String id;

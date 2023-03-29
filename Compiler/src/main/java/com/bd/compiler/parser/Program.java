@@ -4,8 +4,8 @@ import java.util.List;
 
 /**
  * Program
- File: Program.java
- TODO: describe this file!
+ * File: Program.java
+ * A top-level C- syntax tree node
  * 
  * @author Brandon Barker
  * @author David Stirn
