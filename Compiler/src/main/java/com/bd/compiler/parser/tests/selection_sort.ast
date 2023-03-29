@@ -19,7 +19,7 @@ Program {
                i
             <
                high
-        ) {
+        )
             {
                 if(
                        a[
@@ -28,20 +28,19 @@ Program {
                     <
                        x
                 )
-                {
-                    x =
-                        a[
-                            i
-                        ];
-                    k =
-                        i;
-                }
+                   {
+                       x =
+                           a[
+                               i
+                           ];
+                       k =
+                           i;
+                   }
                 i =
                        i
                     +
                        1;
             }
-        }
         return
             k
         ;
@@ -56,7 +55,7 @@ Program {
                   high
                -
                   1
-        ) {
+        )
             {
                 int t;
                 k =
@@ -84,7 +83,6 @@ Program {
                     +
                        1;
             }
-        }
     }
     void main(void)
     {
@@ -95,7 +93,7 @@ Program {
                i
             <
                10
-        ) {
+        )
             {
                 x[
                     i
@@ -106,7 +104,6 @@ Program {
                     +
                        1;
             }
-        }
         sort(
             x,
             0,
@@ -118,7 +115,7 @@ Program {
                i
             <
                10
-        ) {
+        )
             {
                 output(
                     x[
@@ -130,6 +127,5 @@ Program {
                     +
                        1;
             }
-        }
     }
 }

@@ -30,11 +30,12 @@ public class SelectionStatement extends Statement {
         String output = indent+"if(\n";
         
         output+=condition.printTree(indent+"    ")+"\n"+indent+")\n";
-        output+=ifPart.printTree(indent);
+        output+=ifPart.printTree(indent+"   ");
         
         if (elsePart != null) {
-            output+="\nelse\n";
-            output+=elsePart.printTree(indent);
+            output+="\n";
+            output+=indent+"else\n";
+            output+=elsePart.printTree(indent+"   ");
         }
         
         return output;

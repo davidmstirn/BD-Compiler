@@ -27,9 +27,8 @@ public class IterationStatement extends Statement {
         String output = indent+"while(\n";
         
         output+=condition.printTree(indent+"    ")+"\n";
-        output+=indent+") {\n";
-        output+=whilePart.printTree(indent+"    ")+"\n";
-        output+=indent+"}";
+        output+=indent+")\n";
+        output+=whilePart.printTree(indent+"    ");
         
         return output;
     }

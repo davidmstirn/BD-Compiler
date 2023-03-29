@@ -6,22 +6,22 @@ Program {
             ==
                0
         )
-        return
-            u
-        ;
-else
-        return
-            gcd(
-                v,
-                   u
-                -
-                         u
-                      /
+           return
+               u
+           ;
+        else
+           return
+               gcd(
+                   v,
+                      u
+                   -
+                            u
+                         /
+                            v
+                      *
                          v
-                   *
-                      v
-            )
-        ;
+               )
+           ;
     }
     void main(void)
     {
