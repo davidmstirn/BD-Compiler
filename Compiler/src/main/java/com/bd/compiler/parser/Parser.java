@@ -11,5 +11,5 @@ package com.bd.compiler.parser;
  * Copyright of the authors
  */
 public interface Parser {
-    public Program parse();
+    public Program parse() throws ParserException;
 }

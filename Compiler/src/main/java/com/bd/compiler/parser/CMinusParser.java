@@ -50,30 +50,28 @@ public class CMinusParser implements Parser {
 
     public CMinusParser(String filename){
         file = filename;
-        
+    }
+    
+    @Override
+    public Program parse() throws ParserException{
         try {
             fr = new FileReader(file);
             br = new BufferedReader(fr);
             scanner = new CMinusScanner(br);
             currentToken = scanner.getNextToken();
         } catch (IOException e) {
-            System.out.println("Error opening input file");
+            throw new ParserException("Error opening input file");
         } catch (ScannerException e) {
-            System.out.println("Scan error");
+            throw new ParserException("Scan error");
         }
-    }
-    
-    @Override
-    public Program parse() {
+        
         if(program == null){
             try{
                 parseProgram();
                 br.close();
                 fr.close();
-            } catch (ParserException e){
-                System.out.println(e.getMessage());
             } catch (IOException e) {
-                System.out.println("Error closing input file");
+                throw new ParserException("Error closing input file");
             }
         }
         
@@ -137,7 +135,7 @@ public class CMinusParser implements Parser {
         return d;
     }
     
-        private FunctionDeclaration parseFunDeclaration(TypeSpecifier type, String id) throws ParserException {
+    private FunctionDeclaration parseFunDeclaration(TypeSpecifier type, String id) throws ParserException {
         
         matchToken(TokenType.LPAR_TOKEN);
         List<Parameter> params = parseParams();
@@ -625,6 +623,8 @@ public class CMinusParser implements Parser {
             } catch(ScannerException e) {
                 throw new ParserException("Error scanning: last token: " + prev.getType());
             }
+        } else if(prev.getType() == TokenType.ERROR_TOKEN) { 
+            throw new ParserException("Error: ERROR_TOKEN received, but " + t + " expected");
         } else {
             throw new ParserException("Error matching: " + t + " and " + prev.getType());
         }
@@ -660,15 +660,25 @@ public class CMinusParser implements Parser {
         String filename = args[0];
         
         CMinusParser cmp = new CMinusParser(filename);
-        Program p = cmp.parse();
         
-        String outputFilename = filename.substring(0, filename.indexOf('.'));
-        try(FileWriter fw = new FileWriter(outputFilename+".ast")){
-            String output = p.printTree()+"\n";
-            System.out.println(output);
-            fw.append(output);
-        }catch(IOException e){
-            System.out.println("Error opening file");
+        Program p = null;
+        try {
+            p = cmp.parse();
+        } catch (ParserException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        if(p != null){
+            String outputFilename = filename.substring(0, filename.indexOf('.'));
+            try(FileWriter fw = new FileWriter(outputFilename+".ast")){
+                String output = p.printTree()+"\n";
+                System.out.println(output);
+                fw.append(output);
+            }catch(IOException e){
+                System.out.println("Error opening file");
+            }
+        } else {
+            System.out.println("Error parsing " + filename);
         }
     }
 }
