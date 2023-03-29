@@ -21,15 +21,13 @@ public class ReturnStatement extends Statement {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"RET-STMT {\n";
+        String output = indent+"return\n";
         
-        output+=indent+"    RETURN {\n";
         if (statement != null) {
-            output+=statement.printTree(indent+"        ")+"\n";
-        output+=indent+"    }\n";
+            output+=statement.printTree(indent+"    ")+"\n";
         }
+        output+=indent+";";
         
-        output+=indent+"}";
         return output;
     }
 }

@@ -24,17 +24,11 @@ public class AssignExpression extends Expression {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"ASSIGN-EXP {\n";
+        String output = "";
         
-        output+=indent+"    LHS {"+"\n";
-        output+=variableExpression.printTree(indent+"        ")+"\n";
-        output+=indent+"    }"+"\n";
-        
-        output+=indent+"    RHS {"+"\n";
-        output+=rhs.printTree(indent+"        ")+"\n";
-        output+=indent+"    }"+"\n";
-        
-        output+=indent+"}";
+        output+=variableExpression.printTree(indent);
+        output+=" =\n";
+        output+=rhs.printTree(indent+"    ");
         
         return output;
     }

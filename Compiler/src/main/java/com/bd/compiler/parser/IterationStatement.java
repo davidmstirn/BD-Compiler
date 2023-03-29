@@ -24,17 +24,13 @@ public class IterationStatement extends Statement {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"ITER-STMT {\n";
+        String output = indent+"while(\n";
         
-        output+=indent+"    COND {\n";
-        output+=condition.printTree(indent+"        ")+"\n";
-        output+=indent+"    }\n";
-        
-        output+=indent+"    WHILE-PART {\n";
-        output+=whilePart.printTree(indent+"        ")+"\n";
-        output+=indent+"    }\n";
-        
+        output+=condition.printTree(indent+"    ")+"\n";
+        output+=indent+") {\n";
+        output+=whilePart.printTree(indent+"    ")+"\n";
         output+=indent+"}";
+        
         return output;
     }
 }

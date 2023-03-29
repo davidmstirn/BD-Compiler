@@ -1,5 +1,7 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
+
 /**
  * VariableDeclaration
  * File: VariableDeclaration.java
@@ -13,8 +15,8 @@ package com.bd.compiler.parser;
 public class VariableDeclaration extends Declaration {
     private final Integer arrayLength;
     
-    public VariableDeclaration(String id, Integer arrayLength){
-        super(id);
+    public VariableDeclaration(TypeSpecifier type, String id, Integer arrayLength){
+        super(type, id);
         this.arrayLength = arrayLength;
     }
     
@@ -22,7 +24,15 @@ public class VariableDeclaration extends Declaration {
     
     @Override
     public String printTree(String indent) {
-        String len = arrayLength != null ? "["+String.valueOf(arrayLength)+"]" : "";
-        return indent + "VAR-DECL: " + this.getID() + len;
+        String output = indent;
+        
+        if(this.getType() == TypeSpecifier.INT_TYPE) {
+            output+="int " + getID();
+        } else if (this.getType() == TypeSpecifier.VOID_TYPE) {
+            output+="void " + getID();
+        }
+        
+        output+=arrayLength != null ? "["+String.valueOf(arrayLength)+"];" : ";";
+        return output;
     }
 }

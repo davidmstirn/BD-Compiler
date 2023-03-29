@@ -1,342 +1,134 @@
 Program {
-    VAR-DECL: x[10]
-    FUN-DECL: INT_TYPE minloc {
-        PARAMS {
-            PARAM: INT_TYPE a[]
-            PARAM: INT_TYPE low
-            PARAM: INT_TYPE high
+    int x[10];
+    int minloc(int a[], int low, int high)
+    {
+        int i;
+        int x;
+        int k;
+        k =
+            low;
+        x =
+            a[
+                low
+            ];
+        i =
+               low
+            +
+               1;
+        while(
+               i
+            <
+               high
+        ) {
+            {
+                if(
+                       a[
+                           i
+                       ]
+                    <
+                       x
+                )
+                {
+                    x =
+                        a[
+                            i
+                        ];
+                    k =
+                        i;
+                }
+                i =
+                       i
+                    +
+                       1;
+            }
         }
-        BODY {
-            CMPD-STMT {
-                VAR-DECL: i
-                VAR-DECL: x
-                VAR-DECL: k
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: k
-                        }
-                        RHS {
-                            VAR-EXP: low
-                        }
-                    }
-                }
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: x
-                        }
-                        RHS {
-                            VAR-EXP: a[
-                                EXP {
-                                VAR-EXP: low
-                                }
-                            ]
-                        }
-                    }
-                }
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: i
-                        }
-                        RHS {
-                            BIN-EXP: PLUS_BINOP {
-                                VAR-EXP: low
-                                NUM-EXP: 1
-                            }
-                        }
-                    }
-                }
-                ITER-STMT {
-                    COND {
-                        BIN-EXP: LT_BINOP {
-                            VAR-EXP: i
-                            VAR-EXP: high
-                        }
-                    }
-                    WHILE-PART {
-                        CMPD-STMT {
-                            IF-STMT {
-                                COND {
-                                    BIN-EXP: LT_BINOP {
-                                        VAR-EXP: a[
-                                            EXP {
-                                            VAR-EXP: i
-                                            }
-                                        ]
-                                        VAR-EXP: x
-                                    }
-                                }
-                                IF-PART {
-                                    CMPD-STMT {
-                                        EXP-STMT {
-                                            ASSIGN-EXP {
-                                                LHS {
-                                                    VAR-EXP: x
-                                                }
-                                                RHS {
-                                                    VAR-EXP: a[
-                                                        EXP {
-                                                        VAR-EXP: i
-                                                        }
-                                                    ]
-                                                }
-                                            }
-                                        }
-                                        EXP-STMT {
-                                            ASSIGN-EXP {
-                                                LHS {
-                                                    VAR-EXP: k
-                                                }
-                                                RHS {
-                                                    VAR-EXP: i
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: i
-                                    }
-                                    RHS {
-                                        BIN-EXP: PLUS_BINOP {
-                                            VAR-EXP: i
-                                            NUM-EXP: 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                RET-STMT {
-                    RETURN {
-                        VAR-EXP: k
-                    }
-                }
+        return
+            k
+        ;
+    }
+    void sort(int a[], int low, int high)
+    {
+        int i;
+        int k;
+        while(
+               i
+            <
+                  high
+               -
+                  1
+        ) {
+            {
+                int t;
+                k =
+                    minloc(
+                        a,
+                        i,
+                        high
+                    );
+                t =
+                    a[
+                        k
+                    ];
+                a[
+                    k
+                ] =
+                    a[
+                        i
+                    ];
+                a[
+                    i
+                ] =
+                    t;
+                i =
+                       i
+                    +
+                       1;
             }
         }
     }
-    FUN-DECL: VOID_TYPE sort {
-        PARAMS {
-            PARAM: INT_TYPE a[]
-            PARAM: INT_TYPE low
-            PARAM: INT_TYPE high
-        }
-        BODY {
-            CMPD-STMT {
-                VAR-DECL: i
-                VAR-DECL: k
-                ITER-STMT {
-                    COND {
-                        BIN-EXP: LT_BINOP {
-                            VAR-EXP: i
-                            BIN-EXP: MINUS_BINOP {
-                                VAR-EXP: high
-                                NUM-EXP: 1
-                            }
-                        }
-                    }
-                    WHILE-PART {
-                        CMPD-STMT {
-                            VAR-DECL: t
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: k
-                                    }
-                                    RHS {
-                                        CALL-EXP: minloc(
-                                            ARGS {
-                                                VAR-EXP: a
-                                                VAR-EXP: i
-                                                VAR-EXP: high
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: t
-                                    }
-                                    RHS {
-                                        VAR-EXP: a[
-                                            EXP {
-                                            VAR-EXP: k
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: a[
-                                            EXP {
-                                            VAR-EXP: k
-                                            }
-                                        ]
-                                    }
-                                    RHS {
-                                        VAR-EXP: a[
-                                            EXP {
-                                            VAR-EXP: i
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: a[
-                                            EXP {
-                                            VAR-EXP: i
-                                            }
-                                        ]
-                                    }
-                                    RHS {
-                                        VAR-EXP: t
-                                    }
-                                }
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: i
-                                    }
-                                    RHS {
-                                        BIN-EXP: PLUS_BINOP {
-                                            VAR-EXP: i
-                                            NUM-EXP: 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    void main(void)
+    {
+        int i;
+        i =
+            0;
+        while(
+               i
+            <
+               10
+        ) {
+            {
+                x[
+                    i
+                ] =
+                    input();
+                i =
+                       i
+                    +
+                       1;
             }
         }
-    }
-    FUN-DECL: VOID_TYPE main {
-        PARAMS {
-            PARAM: VOID_TYPE 
-        }
-        BODY {
-            CMPD-STMT {
-                VAR-DECL: i
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: i
-                        }
-                        RHS {
-                            NUM-EXP: 0
-                        }
-                    }
-                }
-                ITER-STMT {
-                    COND {
-                        BIN-EXP: LT_BINOP {
-                            VAR-EXP: i
-                            NUM-EXP: 10
-                        }
-                    }
-                    WHILE-PART {
-                        CMPD-STMT {
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: x[
-                                            EXP {
-                                            VAR-EXP: i
-                                            }
-                                        ]
-                                    }
-                                    RHS {
-                                        CALL-EXP: input(
-                                        )
-                                    }
-                                }
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: i
-                                    }
-                                    RHS {
-                                        BIN-EXP: PLUS_BINOP {
-                                            VAR-EXP: i
-                                            NUM-EXP: 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                EXP-STMT {
-                    CALL-EXP: sort(
-                        ARGS {
-                            VAR-EXP: x
-                            NUM-EXP: 0
-                            NUM-EXP: 10
-                        }
-                    )
-                }
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: i
-                        }
-                        RHS {
-                            NUM-EXP: 0
-                        }
-                    }
-                }
-                ITER-STMT {
-                    COND {
-                        BIN-EXP: LT_BINOP {
-                            VAR-EXP: i
-                            NUM-EXP: 10
-                        }
-                    }
-                    WHILE-PART {
-                        CMPD-STMT {
-                            EXP-STMT {
-                                CALL-EXP: output(
-                                    ARGS {
-                                        VAR-EXP: x[
-                                            EXP {
-                                            VAR-EXP: i
-                                            }
-                                        ]
-                                    }
-                                )
-                            }
-                            EXP-STMT {
-                                ASSIGN-EXP {
-                                    LHS {
-                                        VAR-EXP: i
-                                    }
-                                    RHS {
-                                        BIN-EXP: PLUS_BINOP {
-                                            VAR-EXP: i
-                                            NUM-EXP: 1
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        sort(
+            x,
+            0,
+            10
+        );
+        i =
+            0;
+        while(
+               i
+            <
+               10
+        ) {
+            {
+                output(
+                    x[
+                        i
+                    ]
+                );
+                i =
+                       i
+                    +
+                       1;
             }
         }
     }

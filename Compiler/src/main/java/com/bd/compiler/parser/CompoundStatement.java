@@ -26,7 +26,7 @@ public class CompoundStatement extends Statement {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"CMPD-STMT {\n";
+        String output = indent+"{\n";
         
         for(Declaration d : localDeclarationList) {
             output+=d.printTree(indent+"    ")+"\n";

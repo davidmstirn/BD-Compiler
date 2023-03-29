@@ -27,23 +27,16 @@ public class SelectionStatement extends Statement {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"IF-STMT {\n";
+        String output = indent+"if(\n";
         
-        output+=indent+"    COND {\n";
-        output+=condition.printTree(indent+"        ")+"\n";
-        output+=indent+"    }\n";
-        
-        output+=indent+"    IF-PART {\n";
-        output+=ifPart.printTree(indent+"        ")+"\n";
-        output+=indent+"    }\n";
+        output+=condition.printTree(indent+"    ")+"\n"+indent+")\n";
+        output+=ifPart.printTree(indent);
         
         if (elsePart != null) {
-            output+=indent+"    ELSE-PART {\n";
-            output+=elsePart.printTree(indent+"        ")+"\n";
-            output+=indent+"    }\n";
+            output+="\nelse\n";
+            output+=elsePart.printTree(indent);
         }
         
-        output+=indent+"}";
         return output;
     }
 }

@@ -21,11 +21,10 @@ public class ExpressionStatement extends Statement {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"EXP-STMT {\n";
-        if (exp != null) {
-            output+= exp.printTree(indent+"    ")+"\n";
-        }
-        output+= indent+"}";
+        String output = "";
+        
+        output+= exp.printTree(indent)+";";
+        
         return output;
     }
 }

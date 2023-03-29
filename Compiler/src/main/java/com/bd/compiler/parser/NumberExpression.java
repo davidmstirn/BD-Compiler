@@ -21,7 +21,7 @@ public class NumberExpression extends Expression {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"NUM-EXP: " + value ;
+        String output = indent + value ;
         
         return output;
     }

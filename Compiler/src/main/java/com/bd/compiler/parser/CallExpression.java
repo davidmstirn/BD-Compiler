@@ -26,19 +26,17 @@ public class CallExpression extends Expression {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"CALL-EXP: " + identifier;
-        output+="(\n";
-        
+        String output = indent + identifier + "(";
         
         if(arguments != null){
-            output+=indent+"    ARGS {\n";
+            output+="\n";
             for(Expression e : arguments) {
-                output+=e.printTree(indent+"        ")+"\n";
+                output+=e.printTree(indent+"    ")+",\n";
             }
-            output+=indent+"    }\n";
+            output=output.substring(0, output.length()-2)+"\n"+indent;
         }
         
-        output+=indent+")";
+        output+=")";
         
         return output;
     }

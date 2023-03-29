@@ -122,7 +122,7 @@ public class CMinusParser implements Parser {
         if(currentToken.getType() == TokenType.SEMI_TOKEN){
         // declaration' -> ;
             matchToken(TokenType.SEMI_TOKEN);
-            d = new VariableDeclaration(id, null);
+            d = new VariableDeclaration(TypeSpecifier.INT_TYPE, id, null);
             
         } else if(currentToken.getType() == TokenType.LSQ_TOKEN) {
         // declaration' -> [ NUM ] ;
@@ -130,7 +130,7 @@ public class CMinusParser implements Parser {
             Token num = matchToken(TokenType.NUM_TOKEN);
             matchToken(TokenType.RSQ_TOKEN);
             matchToken(TokenType.SEMI_TOKEN);
-            d = new VariableDeclaration(id, (Integer) num.getData());
+            d = new VariableDeclaration(TypeSpecifier.INT_TYPE, id, (Integer) num.getData());
             
         } else if(currentToken.getType() == TokenType.LPAR_TOKEN) {
         // declaration' -> fun-declaration
@@ -250,9 +250,9 @@ public class CMinusParser implements Parser {
             Object len = currentToken.getData();
             matchToken(TokenType.NUM_TOKEN);
             matchToken(TokenType.RSQ_TOKEN);
-            decl = new VariableDeclaration((String) id, (Integer) len);
+            decl = new VariableDeclaration(TypeSpecifier.INT_TYPE, (String) id, (Integer) len);
         } else {
-            decl = new VariableDeclaration((String) id, null);
+            decl = new VariableDeclaration(TypeSpecifier.INT_TYPE, (String) id, null);
         }
         
         matchToken(TokenType.SEMI_TOKEN);

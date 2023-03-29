@@ -28,7 +28,13 @@ public class Parameter {
     public boolean isArray() { return isArray; }
     
     public String printTree(String indent) {
-        String output = indent+"PARAM: " + type + " " + identifier;
+        String output = "";
+        
+        if(type == TypeSpecifier.INT_TYPE) {
+            output+="int " + identifier;
+        } else if (type == TypeSpecifier.VOID_TYPE) {
+            output+="void";
+        }
         
         if(isArray) {
             output+= "[]";

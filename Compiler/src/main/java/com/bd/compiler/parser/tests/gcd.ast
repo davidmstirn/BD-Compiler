@@ -1,93 +1,41 @@
 Program {
-    FUN-DECL: INT_TYPE gcd {
-        PARAMS {
-            PARAM: INT_TYPE u
-            PARAM: INT_TYPE v
-        }
-        BODY {
-            CMPD-STMT {
-                IF-STMT {
-                    COND {
-                        BIN-EXP: EQ_BINOP {
-                            VAR-EXP: v
-                            NUM-EXP: 0
-                        }
-                    }
-                    IF-PART {
-                        RET-STMT {
-                            RETURN {
-                                VAR-EXP: u
-                            }
-                        }
-                    }
-                    ELSE-PART {
-                        RET-STMT {
-                            RETURN {
-                                CALL-EXP: gcd(
-                                    ARGS {
-                                        VAR-EXP: v
-                                        BIN-EXP: MINUS_BINOP {
-                                            VAR-EXP: u
-                                            BIN-EXP: MUL_BINOP {
-                                                BIN-EXP: DIV_BINOP {
-                                                    VAR-EXP: u
-                                                    VAR-EXP: v
-                                                }
-                                                VAR-EXP: v
-                                            }
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    int gcd(int u, int v)
+    {
+        if(
+               v
+            ==
+               0
+        )
+        return
+            u
+        ;
+else
+        return
+            gcd(
+                v,
+                   u
+                -
+                         u
+                      /
+                         v
+                   *
+                      v
+            )
+        ;
     }
-    FUN-DECL: VOID_TYPE main {
-        PARAMS {
-            PARAM: VOID_TYPE 
-        }
-        BODY {
-            CMPD-STMT {
-                VAR-DECL: x
-                VAR-DECL: y
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: x
-                        }
-                        RHS {
-                            CALL-EXP: input(
-                            )
-                        }
-                    }
-                }
-                EXP-STMT {
-                    ASSIGN-EXP {
-                        LHS {
-                            VAR-EXP: y
-                        }
-                        RHS {
-                            CALL-EXP: input(
-                            )
-                        }
-                    }
-                }
-                EXP-STMT {
-                    CALL-EXP: output(
-                        ARGS {
-                            CALL-EXP: gcd(
-                                ARGS {
-                                    VAR-EXP: x
-                                    VAR-EXP: y
-                                }
-                            )
-                        }
-                    )
-                }
-            }
-        }
+    void main(void)
+    {
+        int x;
+        int y;
+        x =
+            input();
+        y =
+            input();
+        output(
+            gcd(
+                x,
+                y
+            )
+        );
     }
 }

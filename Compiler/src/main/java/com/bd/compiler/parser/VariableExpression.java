@@ -24,13 +24,11 @@ public class VariableExpression extends Expression {
     
     @Override
     public String printTree(String indent) {
-        String output = indent+"VAR-EXP: " + identifier;
+        String output = indent + identifier;
         
         if(arraySubscript != null) {
             output+="[\n";
-            output+=indent+"    EXP {\n";
             output+=arraySubscript.printTree(indent+"    ")+"\n";
-            output+=indent+"    }\n";
             output+=indent+"]";
         }
         

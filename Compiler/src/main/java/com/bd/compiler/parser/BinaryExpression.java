@@ -29,12 +29,47 @@ public class BinaryExpression extends Expression {
         
     @Override
     public String printTree(String indent) {
-        String output = indent+"BIN-EXP: " + op.name() + " {\n";
+        String output = "";
         
-        output+=lhs.printTree(indent+"    ")+"\n";
-        output+=rhs.printTree(indent+"    ")+"\n";
+        output+=lhs.printTree(indent+"   ")+"\n";
         
-        output+=indent+"}";
+        output+=indent;
+        switch(op){                
+            case LT_EQ_BINOP:
+                output+="<=";
+                break;
+            case LT_BINOP:
+                output+="<";
+                break;
+            case GT_BINOP:
+                output+=">";
+                break;
+            case GT_EQ_BINOP:
+                output+=">=";
+                break;
+            case EQ_BINOP:
+                output+="==";
+                break;
+            case NE_BINOP:
+                output+="!=";
+                break;
+            case PLUS_BINOP:
+                output+="+";
+                break;
+            case MINUS_BINOP:
+                output+="-";
+                break;
+            case MUL_BINOP:
+                output+="*";
+                break;
+            case DIV_BINOP:
+                output+="/";
+                break;
+        }
+        output+="\n";
+        
+        output+=rhs.printTree(indent+"   ");
+        
         return output;
     }
 }

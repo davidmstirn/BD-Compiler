@@ -1,5 +1,7 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
+
 /**
  * Declaration
  * File: Declaration.java
@@ -11,12 +13,15 @@ package com.bd.compiler.parser;
  * Copyright of the authors
  */
 public abstract class Declaration {
+    private final TypeSpecifier type;
     private final String id;
     
-    public Declaration(String id) {
+    public Declaration(TypeSpecifier type, String id) {
+        this.type = type;
         this.id = id;
     }
     
+    public TypeSpecifier getType() { return type; }
     public String getID() { return id; }
     
     public abstract String printTree(String indent);
