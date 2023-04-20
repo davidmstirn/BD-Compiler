@@ -1,5 +1,11 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CMinusCompiler;
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.BasicBlock;
+import com.bd.compiler.lowlevel.CodeItem;
+import com.bd.compiler.lowlevel.Data;
+import com.bd.compiler.lowlevel.Function;
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
 import java.util.List;
 
@@ -51,5 +57,27 @@ public class FunctionDeclaration extends Declaration {
         }
                 
         return output;
+    }
+    
+    @Override
+    public CodeItem genLLCode() throws CompilerException{
+        int type = -1;
+        if(this.getType() == CMinusParser.TypeSpecifier.VOID_TYPE){
+            type = Data.TYPE_VOID;
+        } else if (this.getType() == CMinusParser.TypeSpecifier.INT_TYPE){
+            type = Data.TYPE_INT;
+        }
+        
+        String name = this.getID();
+        
+        CMinusCompiler.globalHash.put(name, type);
+
+        Function curr = new Function(type, name);
+        ((Function) curr).createBlock0();
+        //TODO genCode on cmpdstmt
+        BasicBlock retBlock = ((Function) curr).getReturnBlock();
+        ((Function) curr).appendBlock(retBlock);
+        
+        return curr;
     }
 }

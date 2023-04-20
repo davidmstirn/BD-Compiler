@@ -23,7 +23,9 @@ public class ExpressionStatement extends Statement {
     public String printTree(String indent) {
         String output = "";
         
-        output+= exp.printTree(indent)+";";
+        if(exp != null){
+            output+= exp.printTree(indent)+";";
+        }
         
         return output;
     }

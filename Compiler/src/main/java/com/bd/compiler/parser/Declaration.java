@@ -1,5 +1,7 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.CodeItem;
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
 
 /**
@@ -25,4 +27,5 @@ public abstract class Declaration {
     public String getID() { return id; }
     
     public abstract String printTree(String indent);
+    public abstract CodeItem genLLCode() throws CompilerException;
 }

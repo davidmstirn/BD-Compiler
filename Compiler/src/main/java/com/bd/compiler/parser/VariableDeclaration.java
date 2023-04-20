@@ -1,5 +1,9 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CMinusCompiler;
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.CodeItem;
+import com.bd.compiler.lowlevel.Data;
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
 
 /**
@@ -34,5 +38,26 @@ public class VariableDeclaration extends Declaration {
         
         output+=arrayLength != null ? "["+String.valueOf(arrayLength)+"];" : ";";
         return output;
+    }
+    
+    @Override
+    public CodeItem genLLCode() throws CompilerException{
+        int type = -1;
+        if(this.getType() == CMinusParser.TypeSpecifier.VOID_TYPE){
+            type = Data.TYPE_VOID;
+        } else if(this.getType() == CMinusParser.TypeSpecifier.INT_TYPE){
+            type = Data.TYPE_INT;
+        }
+        
+        String name = this.getID();
+        
+        CMinusCompiler.globalHash.put(name, type);
+
+        int size = 0;
+        if(arrayLength != null){
+            size = arrayLength;
+        }
+                
+        return new Data(type, name, arrayLength != null, size);
     }
 }

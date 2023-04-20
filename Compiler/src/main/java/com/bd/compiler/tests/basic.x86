@@ -1,0 +1,15 @@
+(DATA  a)
+(FUNCTION  abc  []
+  (BB 2
+  )
+  (BB 1
+    (OPER 2 Return []  [(m EAX)])
+  )
+)
+(FUNCTION  abcd  []
+  (BB 2
+  )
+  (BB 1
+    (OPER 2 Return []  [(m EAX)])
+  )
+)
