@@ -1,6 +1,5 @@
 package com.bd.compiler.parser;
 
-import com.bd.compiler.CMinusCompiler;
 import com.bd.compiler.CompilerException;
 import com.bd.compiler.lowlevel.BasicBlock;
 import com.bd.compiler.lowlevel.CodeItem;
@@ -69,8 +68,6 @@ public class FunctionDeclaration extends Declaration {
         }
         
         String name = this.getID();
-        
-        CMinusCompiler.globalHash.put(name, type);
 
         Function curr = new Function(type, name);
         ((Function) curr).createBlock0();

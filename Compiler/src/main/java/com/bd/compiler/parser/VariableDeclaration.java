@@ -51,7 +51,7 @@ public class VariableDeclaration extends Declaration {
         
         String name = this.getID();
         
-        CMinusCompiler.globalHash.put(name, type);
+        CMinusCompiler.globalHash.put(name, name);
 
         int size = 0;
         if(arrayLength != null){
