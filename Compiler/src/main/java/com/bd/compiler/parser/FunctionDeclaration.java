@@ -4,6 +4,7 @@ import com.bd.compiler.CompilerException;
 import com.bd.compiler.lowlevel.BasicBlock;
 import com.bd.compiler.lowlevel.CodeItem;
 import com.bd.compiler.lowlevel.Data;
+import com.bd.compiler.lowlevel.FuncParam;
 import com.bd.compiler.lowlevel.Function;
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
 import java.util.List;
@@ -69,11 +70,53 @@ public class FunctionDeclaration extends Declaration {
         
         String name = this.getID();
 
+        // Setup Current function
         Function curr = new Function(type, name);
-        ((Function) curr).createBlock0();
+        curr.createBlock0();
+        BasicBlock block1 = new BasicBlock(curr);
+        curr.appendBlock(block1);
+        curr.setCurrBlock(block1);
+        
+        // Create Parameters
+        FuncParam firstFuncParam = null;
+        FuncParam previousFuncParam = null;
+        for(int i = 0; i < parameters.size(); i++){
+            Parameter p = parameters.get(i);
+            
+            int paramType = -1;
+            if(p.getType() == TypeSpecifier.VOID_TYPE){
+                paramType = Data.TYPE_VOID;
+            } else if(p.getType() == TypeSpecifier.INT_TYPE){
+                paramType = Data.TYPE_INT;
+            }
+            
+            String paramName = p.getIdentifier();
+            
+            int regNum = curr.getNewRegNum();
+            curr.getTable().put(paramName, regNum);
+            
+            FuncParam currParam = new FuncParam(paramType, paramName);
+            
+            if(i == 0){
+                firstFuncParam = currParam;
+            } else {
+                previousFuncParam.setNextParam(currParam);
+            }
+            previousFuncParam = currParam;
+        }
+        curr.setFirstParam(firstFuncParam);
+        
         //TODO genCode on cmpdstmt
-        BasicBlock retBlock = ((Function) curr).getReturnBlock();
-        ((Function) curr).appendBlock(retBlock);
+
+        
+        // Finalize Function
+        curr.appendBlock(curr.getReturnBlock());
+        BasicBlock unconnected = curr.getFirstUnconnectedBlock();
+        
+        if(unconnected != null){
+            curr.appendBlock(unconnected);
+            curr.setFirstUnconnectedBlock(null);
+        }
         
         return curr;
     }

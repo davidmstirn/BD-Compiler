@@ -4,6 +4,7 @@ import com.bd.compiler.CMinusCompiler;
 import com.bd.compiler.CompilerException;
 import com.bd.compiler.lowlevel.CodeItem;
 import com.bd.compiler.lowlevel.Data;
+import com.bd.compiler.lowlevel.Function;
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
 
 /**
@@ -42,6 +43,24 @@ public class VariableDeclaration extends Declaration {
     
     @Override
     public CodeItem genLLCode() throws CompilerException{
+        int type = -1;
+        if(this.getType() == CMinusParser.TypeSpecifier.VOID_TYPE){
+            type = Data.TYPE_VOID;
+        } else if(this.getType() == CMinusParser.TypeSpecifier.INT_TYPE){
+            type = Data.TYPE_INT;
+        }
+        
+        String name = this.getID();
+        
+        CMinusCompiler.globalHash.put(name, name);
+
+        // We are not required to handle arrays
+        int size = 0;
+                
+        return new Data(type, name, false, size);
+    }
+    
+    public CodeItem genLLCode(Function parentFunction) throws CompilerException{
         int type = -1;
         if(this.getType() == CMinusParser.TypeSpecifier.VOID_TYPE){
             type = Data.TYPE_VOID;

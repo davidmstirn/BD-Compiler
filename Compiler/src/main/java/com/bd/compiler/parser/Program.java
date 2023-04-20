@@ -1,10 +1,7 @@
 package com.bd.compiler.parser;
 
 import com.bd.compiler.CompilerException;
-import com.bd.compiler.lowlevel.BasicBlock;
 import com.bd.compiler.lowlevel.CodeItem;
-import com.bd.compiler.lowlevel.Data;
-import com.bd.compiler.lowlevel.Function;
 import java.util.List;
 
 /**
@@ -36,17 +33,16 @@ public class Program {
     }
     
     public CodeItem genLLCode() throws CompilerException{
-        CodeItem first = null;
-        CodeItem prev = null;
-        for(int i = 0; i < declarationList.size(); i++){
+        Declaration firstDecl = declarationList.get(0);
+        
+        CodeItem first = firstDecl.genLLCode();
+        CodeItem prev = first;
+        
+        for(int i = 1; i < declarationList.size(); i++){
             Declaration d = declarationList.get(i);
             CodeItem curr = d.genLLCode();
             
-            if(i == 0) { 
-                first = curr;
-            } else{
-                prev.setNextItem(curr);
-            }
+            prev.setNextItem(curr);
             prev = curr;
         }
         return first;

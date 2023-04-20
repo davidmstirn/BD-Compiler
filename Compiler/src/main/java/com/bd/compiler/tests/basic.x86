@@ -1,13 +1,42 @@
 (DATA  a)
-(FUNCTION  abc  []
+(FUNCTION  himom  [(void )]
   (BB 2
+    (OPER 4 Mov [(r 1)]  [(m EDI)])
   )
   (BB 1
     (OPER 2 Return []  [(m EAX)])
   )
 )
-(FUNCTION  abcd  []
+(FUNCTION  abcd  [(void )]
   (BB 2
+    (OPER 4 Mov [(r 1)]  [(m EDI)])
+  )
+  (BB 1
+    (OPER 2 Return []  [(m EAX)])
+  )
+)
+(FUNCTION  abc  [(int a)]
+  (BB 2
+    (OPER 4 Mov [(r 1)]  [(m EDI)])
+  )
+  (BB 1
+    (OPER 2 Return []  [(m EAX)])
+  )
+)
+(FUNCTION  def  [(int a) (int b)]
+  (BB 2
+    (OPER 4 Mov [(r 1)]  [(m EDI)])
+    (OPER 5 Mov [(r 2)]  [(m ESI)])
+  )
+  (BB 1
+    (OPER 2 Return []  [(m EAX)])
+  )
+)
+(FUNCTION  ghi  [(int a) (int b) (int c)]
+  (BB 2
+    (OPER 4 Mov [(r 1)]  [(m EDI)])
+    (OPER 5 Mov [(r 2)]  [(m ESI)])
+    (OPER 6 Mov [(r 3)]  [(m EDX)])
   )
   (BB 1
     (OPER 2 Return []  [(m EAX)])
