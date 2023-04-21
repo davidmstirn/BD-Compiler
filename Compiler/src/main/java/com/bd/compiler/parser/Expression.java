@@ -22,5 +22,7 @@ public abstract class Expression {
     public int getRegNum() {
         return regNum;
     }
+    
+    public void setRegNum(int reg) { regNum = reg; }
 
 }

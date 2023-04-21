@@ -15,6 +15,8 @@
     (OPER 3 Func_Entry []  [])
   )
   (BB 3
+    (OPER 5 Mov [(r 2)]  [(i 0)])
+    (OPER 4 Mov [(r 0)]  [(r 2)])
   )
   (BB 1
     (OPER 1 Func_Exit []  [])

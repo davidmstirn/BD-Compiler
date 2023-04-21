@@ -11,6 +11,8 @@ himom_bb1:
 .globl  abcd
 abcd:
 abcd_bb2:
+abcd_bb3:
+	movl	$0, %EAX
 abcd_bb1:
 	ret
 .globl  abc

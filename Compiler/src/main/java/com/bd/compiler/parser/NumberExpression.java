@@ -1,7 +1,10 @@
 package com.bd.compiler.parser;
 
 import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.BasicBlock;
 import com.bd.compiler.lowlevel.Function;
+import com.bd.compiler.lowlevel.Operand;
+import com.bd.compiler.lowlevel.Operation;
 
 /**
  * NumberExpression
@@ -31,6 +34,16 @@ public class NumberExpression extends Expression {
 
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        // TODO: What is this used for?
+        int regNum = curr.getNewRegNum();
+        this.setRegNum(regNum);
+        BasicBlock b = curr.getCurrBlock();
+        
+        Operation o = new Operation(Operation.OperationType.ASSIGN, b);
+        Operand dst = new Operand(Operand.OperandType.REGISTER, regNum);
+        Operand src = new Operand(Operand.OperandType.INTEGER, value);
+        o.setDestOperand(0, dst);
+        o.setSrcOperand(0, src);
+        
+        b.appendOper(o);
     }
 }

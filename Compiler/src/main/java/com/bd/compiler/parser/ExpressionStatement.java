@@ -35,6 +35,8 @@ public class ExpressionStatement extends Statement {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        exp.genLLCode(curr);
+        if(exp != null){
+            exp.genLLCode(curr);
+        }
     }
 }
