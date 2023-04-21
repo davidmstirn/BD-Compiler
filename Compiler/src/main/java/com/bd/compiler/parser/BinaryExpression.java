@@ -79,6 +79,9 @@ public class BinaryExpression extends Expression {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
+        int destReg = curr.getNewRegNum();
+        this.setRegNum(destReg);
+        
         Operation oper = new Operation(null, curr.getCurrBlock());
         switch(op){
             case LT_EQ_BINOP:
@@ -116,6 +119,7 @@ public class BinaryExpression extends Expression {
         oper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, lhs.getRegNum()));
         rhs.genLLCode(curr);
         oper.setSrcOperand(1, new Operand(Operand.OperandType.REGISTER, rhs.getRegNum()));
+        oper.setDestOperand(0, new Operand(Operand.OperandType.REGISTER, destReg));
         curr.getCurrBlock().appendOper(oper);
     }
 }
