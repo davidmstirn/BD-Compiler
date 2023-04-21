@@ -41,29 +41,41 @@ public class IterationStatement extends Statement {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        // Create basic blocks to reference
+        // 1. Create basic blocks to reference
         BasicBlock thenBlock = new BasicBlock(curr);
         BasicBlock postBlock = new BasicBlock(curr);
         
-        // Generate condition code and branch
+        // 2. Generate condition code
         condition.genLLCode(curr);
-        Operation branch = new Operation(Operation.OperationType.BNE, curr.getCurrBlock());
-        branch.setDestOperand(0, new Operand(Operand.OperandType.BLOCK, postBlock));
+        
+        // 3. Create branch
+        Operation branch = new Operation(Operation.OperationType.BEQ, curr.getCurrBlock());
+        branch.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, condition.getRegNum()));
+        branch.setSrcOperand(1, new Operand(Operand.OperandType.INTEGER, 0));
+        branch.setSrcOperand(2, new Operand(Operand.OperandType.BLOCK, postBlock.getBlockNum()));
         curr.getCurrBlock().appendOper(branch);
         
-        // Generate then code and attach then and post blocks
+        // 4. Append then block
         curr.appendToCurrentBlock(thenBlock);
+        
+        // 5. currBlock = thenBlock
         curr.setCurrBlock(thenBlock);
+        
+        // 6. Generate then code
         whilePart.genLLCode(curr);
         
-        // Generate second condition code with branch
+        // 6.5 Generate second condition code with branch
         condition.genLLCode(curr);
-        Operation secondBranch = new Operation(Operation.OperationType.BEQ, curr.getCurrBlock());
-        secondBranch.setDestOperand(0, new Operand(Operand.OperandType.BLOCK, thenBlock));
-        curr.getCurrBlock().appendOper(secondBranch);        
+        Operation secondBranch = new Operation(Operation.OperationType.BNE, curr.getCurrBlock());
+        secondBranch.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, condition.getRegNum()));
+        secondBranch.setSrcOperand(1, new Operand(Operand.OperandType.INTEGER, 0));
+        secondBranch.setSrcOperand(2, new Operand(Operand.OperandType.BLOCK, thenBlock.getBlockNum()));
+        curr.getCurrBlock().appendOper(secondBranch);
         
-        // Add post block
-        curr.appendToCurrentBlock(postBlock);        
+        // 7. Append post block
+        curr.appendToCurrentBlock(postBlock);
+        
+        // 12. currBlock = postBlock
         curr.setCurrBlock(postBlock);
     }
 }

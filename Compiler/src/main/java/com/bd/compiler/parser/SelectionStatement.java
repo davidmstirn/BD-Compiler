@@ -48,7 +48,7 @@ public class SelectionStatement extends Statement {
     }
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        // Create basic blocks to reference
+        // 1. Create basic blocks to reference
         BasicBlock thenBlock = new BasicBlock(curr);
         BasicBlock postBlock = new BasicBlock(curr);
         BasicBlock elseBlock = null;
@@ -56,32 +56,47 @@ public class SelectionStatement extends Statement {
             elseBlock = new BasicBlock(curr);
         }
         
-        // Generate condition code and branch
+        // 2. Generate condition code
         condition.genLLCode(curr);
-        Operation branch = new Operation(Operation.OperationType.BNE, curr.getCurrBlock());
-        if (elsePart != null) {
-            branch.setDestOperand(0, new Operand(Operand.OperandType.BLOCK, elseBlock));
-        } else {
-            branch.setDestOperand(0, new Operand(Operand.OperandType.BLOCK, postBlock));
-        }
-        curr.getCurrBlock().appendOper(branch);
         
-        // Generate then code and attach then and post blocks
+        // 3. Create BEQ
+        Operation branchOper = new Operation(Operation.OperationType.BEQ, curr.getCurrBlock());
+        branchOper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, condition.getRegNum()));
+        branchOper.setSrcOperand(1, new Operand(Operand.OperandType.INTEGER, 0));
+        if (elsePart != null) {
+            branchOper.setSrcOperand(2, new Operand(Operand.OperandType.BLOCK, elseBlock.getBlockNum()));
+        } else {
+            branchOper.setSrcOperand(2, new Operand(Operand.OperandType.BLOCK, postBlock.getBlockNum()));
+        }
+        curr.getCurrBlock().appendOper(branchOper);
+        
+        // 4. Append then block
         curr.appendToCurrentBlock(thenBlock);
+        
+        // 5. currBlock = thenBlock
         curr.setCurrBlock(thenBlock);
+        
+        // 6. Generate then code
         ifPart.genLLCode(curr);
         
+        // 7. Append post block
         curr.appendToCurrentBlock(postBlock);
         
         // If there is an else, generate else code and hook up blocks and jumps
         if (elsePart != null) {
+            // 8. currBlock = elseBlock
             curr.setCurrBlock(elseBlock);
+            // 9. Generate else code
             elsePart.genLLCode(curr);
-            Operation jump = new Operation(Operation.OperationType.JMP, curr.getCurrBlock());
-            jump.setDestOperand(0, new Operand(Operand.OperandType.BLOCK, postBlock));
+            // 10. Append jmp to post block
+            Operation elseJump = new Operation(Operation.OperationType.JMP, curr.getCurrBlock());
+            elseJump.setSrcOperand(0, new Operand(Operand.OperandType.BLOCK, postBlock.getBlockNum()));
+            curr.getCurrBlock().appendOper(elseJump);
+            // 11. Add else to unconnected chain
             curr.appendUnconnectedBlock(elseBlock);
         }
         
+        // 12. currBlock = postBlock
         curr.setCurrBlock(postBlock);
     }
 }
