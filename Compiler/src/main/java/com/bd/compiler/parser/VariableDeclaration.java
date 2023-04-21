@@ -70,13 +70,12 @@ public class VariableDeclaration extends Declaration {
         
         String name = this.getID();
         
-        CMinusCompiler.globalHash.put(name, name);
+        Integer regNum = parentFunction.getNewRegNum();
+        parentFunction.getTable().put(name, regNum);
 
+        // We are not required to handle arrays
         int size = 0;
-        if(arrayLength != null){
-            size = arrayLength;
-        }
-                
-        return new Data(type, name, arrayLength != null, size);
+        
+        return new Data(type, name, false, size);
     }
 }

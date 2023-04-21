@@ -183,7 +183,7 @@ public class Function extends CodeItem {
    *
    * @return a reference to the function's local symbol table
    */
-  public HashMap getTable () {
+  public HashMap<String, Integer> getTable () {
     return symbolTable;
   }
 

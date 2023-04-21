@@ -1,6 +1,8 @@
 .data
 .comm	a,4,4
 
+.comm	e,4,4
+
 .text
 	.align 4
 .globl  himom
@@ -13,6 +15,7 @@ abcd:
 abcd_bb2:
 abcd_bb3:
 	movl	$0, %EAX
+	movl	%EAX, e(%RIP)
 abcd_bb1:
 	ret
 .globl  abc

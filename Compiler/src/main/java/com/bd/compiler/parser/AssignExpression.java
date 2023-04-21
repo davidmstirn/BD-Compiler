@@ -1,5 +1,6 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CMinusCompiler;
 import com.bd.compiler.CompilerException;
 import com.bd.compiler.lowlevel.Function;
 import com.bd.compiler.lowlevel.Operand;
@@ -40,11 +41,28 @@ public class AssignExpression extends Expression {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        Operation oper = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());
         variableExpression.genLLCode(curr);
-        oper.setDestOperand(0, new Operand(Operand.OperandType.REGISTER, variableExpression.getRegNum()));
         rhs.genLLCode(curr);
-        oper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, rhs.getRegNum()));
-        curr.getCurrBlock().appendOper(oper);
+        this.setRegNum(rhs.getRegNum());
+        
+        Integer regNum = curr.getTable().get(variableExpression.getIdentifier());
+        // In local table, so create AssignExp
+        if(regNum != null){
+            Operation oper = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());    
+            oper.setDestOperand(0, new Operand(Operand.OperandType.REGISTER, variableExpression.getRegNum()));    
+            oper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, rhs.getRegNum()));
+            curr.getCurrBlock().appendOper(oper);
+        } else {
+            String globalID = CMinusCompiler.globalHash.get(variableExpression.getIdentifier());
+            // Variable in global table
+            if(globalID != null){
+                Operation o = new Operation(Operation.OperationType.STORE_I, curr.getCurrBlock());
+                o.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, rhs.getRegNum()));
+                o.setSrcOperand(1, new Operand(Operand.OperandType.STRING, globalID));
+                curr.getCurrBlock().appendOper(o);
+            } else {
+                throw new CompilerException("ASSIGN: Identifier " + variableExpression.getIdentifier() + " not found");
+            }
+        }
     }
 }

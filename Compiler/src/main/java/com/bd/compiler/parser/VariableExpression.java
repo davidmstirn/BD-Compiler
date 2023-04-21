@@ -1,7 +1,10 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CMinusCompiler;
 import com.bd.compiler.CompilerException;
 import com.bd.compiler.lowlevel.Function;
+import com.bd.compiler.lowlevel.Operand;
+import com.bd.compiler.lowlevel.Operation;
 
 /**
  * VariableExpression
@@ -40,6 +43,24 @@ public class VariableExpression extends Expression {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        // TODO: What is this used for?
+        Integer regNum = curr.getTable().get(identifier);
+        // Variable in local symbol table
+        if(regNum != null){
+            this.setRegNum(regNum);
+        } else {
+            String globalID = CMinusCompiler.globalHash.get(identifier);
+            // Variable in global table
+            if(globalID != null){
+                regNum = curr.getNewRegNum();
+                this.setRegNum(regNum);
+                
+                Operation o = new Operation(Operation.OperationType.LOAD_I, curr.getCurrBlock());
+                o.setSrcOperand(0, new Operand(Operand.OperandType.STRING, globalID));
+                o.setDestOperand(0, new Operand(Operand.OperandType.REGISTER, regNum));
+                curr.getCurrBlock().appendOper(o);
+            } else {
+                throw new CompilerException("Identifier " + identifier + " not found");
+            }
+        }
     }
 }

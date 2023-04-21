@@ -1,10 +1,12 @@
 int a;
+int e;
 int himom(void){;}
 
 int abcd(void){
     int a;
 
     a = 0;
+    e = a;
 }
 
 int abc(int a){;}
