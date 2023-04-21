@@ -1,5 +1,8 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+
 /**
  * VariableExpression
  * File: VariableExpression.java
@@ -33,5 +36,10 @@ public class VariableExpression extends Expression {
         }
         
         return output;
+    }
+    
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        // TODO: What is this used for?
     }
 }

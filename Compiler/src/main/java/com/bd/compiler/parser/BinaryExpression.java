@@ -1,5 +1,9 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+import com.bd.compiler.lowlevel.Operand;
+import com.bd.compiler.lowlevel.Operation;
 import com.bd.compiler.parser.CMinusParser.BinaryOperation;
 
 /**
@@ -71,5 +75,47 @@ public class BinaryExpression extends Expression {
         output+=rhs.printTree(indent+"   ");
         
         return output;
+    }
+    
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        Operation oper = new Operation(null, curr.getCurrBlock());
+        switch(op){
+            case LT_EQ_BINOP:
+                oper.setType(Operation.OperationType.LTE);
+                break;
+            case LT_BINOP:
+                oper.setType(Operation.OperationType.LT);
+                break;
+            case GT_BINOP:
+                oper.setType(Operation.OperationType.GT);
+                break;
+            case GT_EQ_BINOP:
+                oper.setType(Operation.OperationType.GTE);
+                break;
+            case EQ_BINOP:
+                oper.setType(Operation.OperationType.EQUAL);
+                break;
+            case NE_BINOP:
+                oper.setType(Operation.OperationType.NOT_EQUAL);
+                break;
+            case PLUS_BINOP:
+                oper.setType(Operation.OperationType.ADD_I);
+                break;
+            case MINUS_BINOP:
+                oper.setType(Operation.OperationType.SUB_I);
+                break;
+            case MUL_BINOP:
+                oper.setType(Operation.OperationType.MUL_I);
+                break;
+            case DIV_BINOP:
+                oper.setType(Operation.OperationType.DIV_I);
+                break;
+        }
+        lhs.genLLCode(curr);
+        oper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, lhs.getRegNum()));
+        rhs.genLLCode(curr);
+        oper.setSrcOperand(1, new Operand(Operand.OperandType.REGISTER, rhs.getRegNum()));
+        curr.getCurrBlock().appendOper(oper);
     }
 }

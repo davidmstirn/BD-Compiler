@@ -1,5 +1,7 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
 import java.util.List;
 
 /**
@@ -37,5 +39,17 @@ public class CompoundStatement extends Statement {
         
         output+=indent+"}";
         return output;
+    }
+    
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        // Let local declarations add themselves to function symbol table
+        for(Declaration d : localDeclarationList) {
+            ((VariableDeclaration) d).genLLCode(curr);
+        }
+        // Let statements add their code to blocks
+        for(Statement s : statementList) {
+            s.genLLCode(curr);
+        }
     }
 }

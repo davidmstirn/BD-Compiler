@@ -1,5 +1,8 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+
 /**
  * Statement
  * File: Statement.java
@@ -12,4 +15,6 @@ package com.bd.compiler.parser;
  */
 public abstract class Statement {
     public abstract String printTree(String indent);
+    
+    public abstract void genLLCode(Function curr) throws CompilerException;
 }

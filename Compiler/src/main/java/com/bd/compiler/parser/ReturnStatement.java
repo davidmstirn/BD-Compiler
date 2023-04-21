@@ -1,5 +1,10 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+import com.bd.compiler.lowlevel.Operand;
+import com.bd.compiler.lowlevel.Operation;
+
 /**
  * ReturnStatement
  * File: ReturnStatement.java
@@ -29,5 +34,16 @@ public class ReturnStatement extends Statement {
         output+=indent+";";
         
         return output;
+    }
+    
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        // Create operation to move return value to retReg
+        Operation returnAssign = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());
+        returnAssign.setDestOperand(0, new Operand(Operand.OperandType.MACRO,"RetReg"));
+        // TODO: Statement code gen? Statement Register?
+        Operand retVal = new Operand(Operand.OperandType.REGISTER);
+        returnAssign.setSrcOperand(0, retVal);
+        curr.getCurrBlock().appendOper(returnAssign);        
     }
 }

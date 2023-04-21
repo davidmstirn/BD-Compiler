@@ -1,5 +1,8 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+
 /**
  * NumberExpression
  * File: NumberExpression.java
@@ -24,5 +27,10 @@ public class NumberExpression extends Expression {
         String output = indent + value ;
         
         return output;
+    }
+
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        // TODO: What is this used for?
     }
 }

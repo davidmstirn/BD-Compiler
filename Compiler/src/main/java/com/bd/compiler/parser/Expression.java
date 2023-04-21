@@ -1,5 +1,8 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+
 /**
  * Expression
  * File: Expression.java
@@ -11,5 +14,13 @@ package com.bd.compiler.parser;
  * Copyright of the authors
  */
 public abstract class Expression {
+    private int regNum;
     public abstract String printTree(String indent);
+
+    public abstract void genLLCode(Function curr) throws CompilerException;
+    
+    public int getRegNum() {
+        return regNum;
+    }
+
 }

@@ -106,8 +106,7 @@ public class FunctionDeclaration extends Declaration {
         }
         curr.setFirstParam(firstFuncParam);
         
-        //TODO genCode on cmpdstmt
-
+        body.genLLCode(curr);        
         
         // Finalize Function
         curr.appendBlock(curr.getReturnBlock());

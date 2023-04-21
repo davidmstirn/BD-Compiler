@@ -1,5 +1,8 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+
 /**
  * ExpressionStatement
  * File: ExpressionStatement.java
@@ -28,5 +31,10 @@ public class ExpressionStatement extends Statement {
         }
         
         return output;
+    }
+    
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        exp.genLLCode(curr);
     }
 }
