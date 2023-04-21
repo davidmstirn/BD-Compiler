@@ -1,5 +1,10 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Function;
+import com.bd.compiler.lowlevel.Operand;
+import com.bd.compiler.lowlevel.Operation;
+
 /**
  * AssignExpression
  * File: AssignExpression.java
@@ -31,5 +36,15 @@ public class AssignExpression extends Expression {
         output+=rhs.printTree(indent+"    ");
         
         return output;
+    }
+    
+    @Override
+    public void genLLCode(Function curr) throws CompilerException {
+        Operation oper = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());
+        variableExpression.genLLCode(curr);
+        oper.setDestOperand(0, new Operand(Operand.OperandType.REGISTER, variableExpression.getRegNum()));
+        rhs.genLLCode(curr);
+        oper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, rhs.getRegNum()));
+        curr.getCurrBlock().appendOper(oper);
     }
 }
