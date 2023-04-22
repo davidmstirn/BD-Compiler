@@ -38,12 +38,15 @@ public class ReturnStatement extends Statement {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        // Create operation to move return value to retReg
-        Operation returnAssign = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());
-        returnAssign.setDestOperand(0, new Operand(Operand.OperandType.MACRO,"RetReg"));
-        // TODO: Statement code gen? Statement Register?
-        Operand retVal = new Operand(Operand.OperandType.REGISTER);
-        returnAssign.setSrcOperand(0, retVal);
-        curr.getCurrBlock().appendOper(returnAssign);        
+        if (statement != null) {
+            // Generate statement
+            statement.genLLCode(curr);
+
+            // Move return value to retReg
+            Operation returnAssign = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());
+            returnAssign.setDestOperand(0, new Operand(Operand.OperandType.MACRO,"RetReg"));
+            returnAssign.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, statement.getRegNum()));
+            curr.getCurrBlock().appendOper(returnAssign);
+        }
     }
 }

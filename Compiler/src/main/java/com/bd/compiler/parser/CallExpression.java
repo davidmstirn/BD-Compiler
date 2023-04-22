@@ -1,7 +1,10 @@
 package com.bd.compiler.parser;
 
 import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.Attribute;
 import com.bd.compiler.lowlevel.Function;
+import com.bd.compiler.lowlevel.Operand;
+import com.bd.compiler.lowlevel.Operation;
 import java.util.List;
 
 /**
@@ -45,6 +48,33 @@ public class CallExpression extends Expression {
     
     @Override
     public void genLLCode(Function curr) throws CompilerException {
-        // TODO: What is this used for?
+        int regNum = curr.getNewRegNum();
+        
+        // Pass argumetns
+        if(arguments != null){
+            for(int i = 0; i < arguments.size(); ++i) {
+                Expression currArg = arguments.get(i);
+                currArg.genLLCode(curr);
+                
+                Operation oper = new Operation(Operation.OperationType.PASS, curr.getCurrBlock());
+                oper.addAttribute(new Attribute("PARAM_NUM", String.valueOf(i)));
+                oper.setSrcOperand(0, new Operand(Operand.OperandType.REGISTER, currArg.getRegNum()));
+                curr.getCurrBlock().appendOper(oper);
+            }
+        }
+        // Generate call
+        Operation call = new Operation(Operation.OperationType.CALL, curr.getCurrBlock());
+        call.setSrcOperand(0, new Operand(Operand.OperandType.STRING, identifier));
+        call.addAttribute(new Attribute("numParams", String.valueOf(arguments.size())));
+        curr.getCurrBlock().appendOper(call);
+        
+        // Mov retReg into regNum
+        Operation returnAssign = new Operation(Operation.OperationType.ASSIGN, curr.getCurrBlock());
+        returnAssign.setSrcOperand(0, new Operand(Operand.OperandType.MACRO,"RetReg"));
+        returnAssign.setDestOperand(0, new Operand(Operand.OperandType.REGISTER, regNum));
+        curr.getCurrBlock().appendOper(returnAssign);
+        
+        this.setRegNum(regNum);
+        
     }
 }

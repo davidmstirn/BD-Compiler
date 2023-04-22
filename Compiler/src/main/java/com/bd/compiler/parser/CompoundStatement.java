@@ -44,12 +44,16 @@ public class CompoundStatement extends Statement {
     @Override
     public void genLLCode(Function curr) throws CompilerException {
         // Let local declarations add themselves to function symbol table
-        for(Declaration d : localDeclarationList) {
-            ((VariableDeclaration) d).genLLCode(curr);
+        if (localDeclarationList != null) {
+            for(Declaration d : localDeclarationList) {
+                ((VariableDeclaration) d).genLLCode(curr);
+            }
         }
         // Let statements add their code to blocks
-        for(Statement s : statementList) {
-            s.genLLCode(curr);
+        if (statementList != null) {
+            for(Statement s : statementList) {
+                s.genLLCode(curr);
+            }
         }
     }
 }
