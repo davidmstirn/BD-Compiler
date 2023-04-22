@@ -50,9 +50,9 @@ public class CallExpression extends Expression {
     public void genLLCode(Function curr) throws CompilerException {
         int regNum = curr.getNewRegNum();
         
-        // Pass argumetns
+        // Pass arguments (in reverse, but with the save values)
         if(arguments != null){
-            for(int i = 0; i < arguments.size(); ++i) {
+            for(int i = arguments.size() - 1; i >= 0; --i) {
                 Expression currArg = arguments.get(i);
                 currArg.genLLCode(curr);
                 
