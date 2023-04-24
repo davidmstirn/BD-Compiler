@@ -82,20 +82,7 @@ public class FunctionDeclaration extends Declaration {
         FuncParam previousFuncParam = null;
         for(int i = 0; i < parameters.size(); i++){
             Parameter p = parameters.get(i);
-            
-            int paramType = -1;
-            if(p.getType() == TypeSpecifier.VOID_TYPE){
-                paramType = Data.TYPE_VOID;
-            } else if(p.getType() == TypeSpecifier.INT_TYPE){
-                paramType = Data.TYPE_INT;
-            }
-            
-            String paramName = p.getIdentifier();
-            
-            int regNum = curr.getNewRegNum();
-            curr.getTable().put(paramName, regNum);
-            
-            FuncParam currParam = new FuncParam(paramType, paramName);
+            FuncParam currParam = p.genLLCode(curr);
             
             if(i == 0){
                 firstFuncParam = currParam;

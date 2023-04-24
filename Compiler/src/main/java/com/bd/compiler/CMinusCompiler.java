@@ -128,7 +128,7 @@ public class CMinusCompiler implements Compiler {
     }
 
     public static void main(String[] args) {
-        String filePrefix = "src\\main\\java\\com\\bd\\compiler\\tests\\ben";
+        String filePrefix = "src\\main\\java\\com\\bd\\compiler\\tests\\testcode";
         CMinusCompiler myCompiler = new CMinusCompiler();
         myCompiler.setGenX64Code(true);
         myCompiler.compile(filePrefix);

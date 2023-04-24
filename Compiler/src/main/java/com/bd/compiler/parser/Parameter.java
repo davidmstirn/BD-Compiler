@@ -1,5 +1,10 @@
 package com.bd.compiler.parser;
 
+import com.bd.compiler.CompilerException;
+import com.bd.compiler.lowlevel.CodeItem;
+import com.bd.compiler.lowlevel.Data;
+import com.bd.compiler.lowlevel.FuncParam;
+import com.bd.compiler.lowlevel.Function;
 import com.bd.compiler.parser.CMinusParser.TypeSpecifier;
 
 /**
@@ -41,5 +46,21 @@ public class Parameter {
         }
                         
         return output;
+    }
+    
+    public FuncParam genLLCode(Function curr) throws CompilerException{
+        int paramType = -1;
+        if(type == TypeSpecifier.VOID_TYPE){
+            paramType = Data.TYPE_VOID;
+        } else if(type == TypeSpecifier.INT_TYPE){
+            paramType = Data.TYPE_INT;
+        }
+
+        String paramName = identifier;
+
+        int regNum = curr.getNewRegNum();
+        curr.getTable().put(paramName, regNum);
+
+        return new FuncParam(paramType, paramName);
     }
 }
